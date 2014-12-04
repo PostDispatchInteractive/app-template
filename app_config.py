@@ -21,8 +21,8 @@ PROJECT_SLUG = '$NEW_PROJECT_SLUG'
 PROJECT_FILENAME = '$NEW_PROJECT_FILENAME'
 
 # The name of the repository containing the source
-REPOSITORY_NAME = '$NEW_REPOSITORY_NAME'
-GITHUB_USERNAME = 'nprapps'
+REPOSITORY_NAME = 'app-template'
+GITHUB_USERNAME = 'kirkman'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
@@ -51,8 +51,8 @@ ASSETS_S3_BUCKET = {
 DEFAULT_MAX_AGE = 20 
 ASSETS_MAX_AGE = 86400
 
-PRODUCTION_SERVERS = ['cron.nprapps.org']
-STAGING_SERVERS = ['50.112.92.131']
+PRODUCTION_SERVERS = ['graphics.stltoday.com']
+STAGING_SERVERS = ['staging.graphics.stltoday.com']
 
 # Should code be deployed to the web/cron servers?
 DEPLOY_TO_SERVERS = False
@@ -94,7 +94,7 @@ DEBUG = True
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=0AlXMOHKxzQVRdHZuX1UycXplRlBfLVB0UVNldHJYZmc&usp=drive_web#gid=1'
+COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=0Ah9eiJcTTiAKdDFxQnA4X3B0Z09ZUGRYWHhmUmZDblE&usp=drive_web#gid=1'
 COPY_PATH = 'data/copy.xlsx'
 
 """
@@ -122,7 +122,7 @@ GOOGLE_ANALYTICS = {
     'TOPICS': '' # e.g. '[1014,3,1003,1002,1001]'
 }
 
-DISQUS_API_KEY = 'tIbSzEhGBE9NIptbnQWn4wy1gZ546CsQ2IHHtxJiYAceyyPoAkDkVnQfCifmCaQW'
+DISQUS_API_KEY = ''
 DISQUS_UUID = '$NEW_DISQUS_UUID'
 
 """
