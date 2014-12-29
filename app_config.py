@@ -34,19 +34,21 @@ ASSETS_SLUG = '$NEW_PROJECT_SLUG'
 DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = {
-    'bucket_name': 'apps.npr.org',
+    'bucket_name': 'graphics.stltoday.com',
     'region': 'us-east-1'
 }
 
 STAGING_S3_BUCKET = {
-    'bucket_name': 'stage-apps.npr.org',
+    'bucket_name': 'staging.graphics.stltoday.com',
     'region': 'us-east-1'
 }
 
 ASSETS_S3_BUCKET = {
-    'bucket_name': 'assets.apps.npr.org',
+    'bucket_name': 'graphics.stltoday.com',
     'region': 'us-east-1'
 }
+
+S3_USER = 'newsroom'
 
 DEFAULT_MAX_AGE = 20 
 ASSETS_MAX_AGE = 86400
@@ -94,7 +96,7 @@ DEBUG = True
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=0Ah9eiJcTTiAKdDFxQnA4X3B0Z09ZUGRYWHhmUmZDblE&usp=drive_web#gid=1'
+COPY_GOOGLE_DOC_URL = 'https://docs.google.com/spreadsheet/ccc?key=0All2UKh5BEF6dGdEV3lTMzROYkNDREprSWZJNHdrb1E'
 COPY_PATH = 'data/copy.xlsx'
 
 """
@@ -161,8 +163,8 @@ def configure_targets(deployment_target):
 
     if deployment_target == 'production':
         S3_BUCKET = PRODUCTION_S3_BUCKET
-        S3_BASE_URL = 'http://%s/%s' % (S3_BUCKET['bucket_name'], PROJECT_SLUG)
-        S3_DEPLOY_URL = 's3://%s/%s' % (S3_BUCKET['bucket_name'], PROJECT_SLUG)
+        S3_BASE_URL = '/home/%s/%s/public_html/%s' % (S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s' % (S3_USER, PRODUCTION_S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
         SERVERS = PRODUCTION_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
@@ -170,8 +172,8 @@ def configure_targets(deployment_target):
         DEBUG = False
     elif deployment_target == 'staging':
         S3_BUCKET = STAGING_S3_BUCKET
-        S3_BASE_URL = 'http://%s/%s' % (S3_BUCKET['bucket_name'], PROJECT_SLUG)
-        S3_DEPLOY_URL = 's3://%s/%s' % (S3_BUCKET['bucket_name'], PROJECT_SLUG)
+        S3_BASE_URL = '/home/%s/%s/public_html/%s' % (S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s' % (S3_USER, PRODUCTION_S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
         SERVERS = STAGING_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME

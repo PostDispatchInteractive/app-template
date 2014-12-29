@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+import os
+
 from fabric.api import local, require, settings, task
 from fabric.state import env
 from termcolor import colored
@@ -133,11 +135,21 @@ def _deploy_to_s3(path='.gzip'):
     local(sync)
     local(sync_gzip)
 
+def _deploy_to_graphics():
+    print app_config.S3_DEPLOY_URL
+    if not os.path.exists(app_config.S3_DEPLOY_URL):
+        os.makedirs(app_config.S3_DEPLOY_URL)
+    sync = ('rsync -a www/ %s ') % (
+        app_config.S3_DEPLOY_URL
+    )
+    local(sync)
+
 def _deploy_assets():
     """
     Deploy assets to S3.
     """
-    sync_assets = 'aws s3 sync www/assets/ %s/assets/ --acl "public-read" --cache-control "max-age=%i" --region "%s"' % (
+
+    sync_assets = 'rsync -a www/assets/ %s/assets/ --acl "public-read" --cache-control "max-age=%i" --region "%s"' % (
         app_config.S3_DEPLOY_URL,
         app_config.ASSETS_MAX_AGE,
         app_config.S3_BUCKET['region']
@@ -187,11 +199,12 @@ def deploy(remote='origin'):
         if app_config.DEPLOY_SERVICES:
             servers.deploy_confs()
 
-    update()
+    # update()
     render.render_all()
-    _gzip('www', '.gzip')
-    _deploy_to_s3()
-    _deploy_assets()
+    # _gzip('www', '.gzip')
+    # _deploy_to_s3()
+    # _deploy_assets()
+    _deploy_to_graphics()
 
 """
 Destruction
