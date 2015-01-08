@@ -32,13 +32,10 @@ def update():
         search3 = re.search(r'^(\S{44})$', url)
         if search1:
             doc['key'] = search1.group(1)
-            print doc['key']
         elif search2:
             doc['key'] = search2.group(1)
-            print doc['key']
         elif search3:
             doc['key'] = search3.group(1)
-            print doc['key']
         else:
             print colored('Failed to parse your Google docs URL. Please check that COPY_GOOGLE_DOC_URL is set properly in app_config.py', 'blue')
             return

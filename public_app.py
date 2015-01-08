@@ -6,6 +6,7 @@ import logging
 import json
 
 from flask import Flask, make_response, render_template
+from flask.ext.misaka import Misaka
 
 import app_config
 from render_utils import make_context, smarty_filter, urlencode_filter
@@ -13,6 +14,8 @@ import static
 
 app = Flask(__name__)
 app.config['PROPAGATE_EXCEPTIONS'] = True
+
+Misaka(app)
 
 file_handler = logging.FileHandler('%s/public_app.log' % app_config.SERVER_LOG_PATH)
 file_handler.setLevel(logging.INFO)

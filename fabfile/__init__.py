@@ -136,9 +136,13 @@ def _deploy_to_s3(path='.gzip'):
     local(sync_gzip)
 
 def _deploy_to_graphics():
-    print app_config.S3_DEPLOY_URL
-    if not os.path.exists(app_config.S3_DEPLOY_URL):
-        os.makedirs(app_config.S3_DEPLOY_URL)
+    mkdir = ('ssh %s@%s mkdir -p %s ') % (
+        app_config.S3_USER,
+        app_config.S3_BUCKET['bucket_name'],
+        app_config.S3_DEPLOY_URL
+    )
+    local(mkdir)
+
     sync = ('rsync -a www/ %s ') % (
         app_config.S3_DEPLOY_URL
     )
