@@ -42,6 +42,13 @@ class Includer(object):
 
         return ''
 
+    # --- BEGIN JOSH ADIITION ---
+    def empty(self):
+        del self.includes[:]
+
+        return ''
+    # --- END JOSH ADIITION ---
+
     def _compress(self):
         raise NotImplementedError()
 

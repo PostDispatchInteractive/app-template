@@ -35,16 +35,19 @@ DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
+    'app_dir': 'apps',
     'region': 'us-east-1'
 }
 
 STAGING_S3_BUCKET = {
     'bucket_name': 'staging.graphics.stltoday.com',
+    'app_dir': 'apps',
     'region': 'us-east-1'
 }
 
 ASSETS_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
+    'app_dir': 'apps',
     'region': 'us-east-1'
 }
 
@@ -59,7 +62,7 @@ STAGING_SERVERS = ['staging.graphics.stltoday.com']
 # Should code be deployed to the web/cron servers?
 DEPLOY_TO_SERVERS = False
 
-SERVER_USER = 'ubuntu'
+SERVER_USER = 'newsroom'
 SERVER_PYTHON = 'python2.7'
 SERVER_PROJECT_PATH = '/home/%s/apps/%s' % (SERVER_USER, PROJECT_FILENAME)
 SERVER_REPOSITORY_PATH = '%s/repository' % SERVER_PROJECT_PATH
@@ -108,18 +111,12 @@ SHARE_URL = 'http://%s/%s/' % (PRODUCTION_S3_BUCKET['bucket_name'], PROJECT_SLUG
 ADS
 """
 
-NPR_DFP = {
-    'STORY_ID': '1002',
-    'TARGET': 'homepage',
-    'ENVIRONMENT': 'NPRTEST',
-    'TESTSERVER': 'false'
-}
 
 """
 SERVICES
 """
 GOOGLE_ANALYTICS = {
-    'ACCOUNT_ID': 'UA-5828686-4',
+    'ACCOUNT_ID': 'UA-54716522-2',
     'DOMAIN': PRODUCTION_S3_BUCKET['bucket_name'],
     'TOPICS': '' # e.g. '[1014,3,1003,1002,1001]'
 }
@@ -163,21 +160,21 @@ def configure_targets(deployment_target):
 
     if deployment_target == 'production':
         S3_BUCKET = PRODUCTION_S3_BUCKET
-        S3_BASE_URL = '/home/%s/%s/public_html/%s' % (S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s' % (S3_USER, PRODUCTION_S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
+        S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = PRODUCTION_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
-        DISQUS_SHORTNAME = 'npr-news'
+        #DISQUS_SHORTNAME = 'npr-news'
         DEBUG = False
     elif deployment_target == 'staging':
         S3_BUCKET = STAGING_S3_BUCKET
-        S3_BASE_URL = '/home/%s/%s/public_html/%s' % (S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s' % (S3_USER, PRODUCTION_S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], PROJECT_SLUG)
+        S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = STAGING_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
-        DISQUS_SHORTNAME = 'nprviz-test'
+        #DISQUS_SHORTNAME = 'nprviz-test'
         DEBUG = True
     else:
         S3_BUCKET = None
@@ -186,7 +183,7 @@ def configure_targets(deployment_target):
         SERVERS = []
         SERVER_BASE_URL = 'http://127.0.0.1:8001/%s' % PROJECT_SLUG
         SERVER_LOG_PATH = '/tmp'
-        DISQUS_SHORTNAME = 'nprviz-test'
+        #DISQUS_SHORTNAME = 'nprviz-test'
         DEBUG = True
 
     DEPLOYMENT_TARGET = deployment_target

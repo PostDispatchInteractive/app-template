@@ -136,15 +136,23 @@ def _deploy_to_s3(path='.gzip'):
     local(sync_gzip)
 
 def _deploy_to_graphics():
-    mkdir = ('ssh %s@%s mkdir -p %s ') % (
+    # -p creates any uncreated directories in the path. avoids errors.
+    # -m ### creates the directories with whatever permission level you specify
+    mkdir = ('ssh %s@%s mkdir -p -m 755 %s ') % (
         app_config.S3_USER,
         app_config.S3_BUCKET['bucket_name'],
-        app_config.S3_DEPLOY_URL
+        app_config.S3_BASE_URL # Base_URL doesn't include the "user@server:" part
     )
     local(mkdir)
 
-    sync = ('rsync -a www/ %s ') % (
-        app_config.S3_DEPLOY_URL
+    # -v verbose mode
+    # -a stands for "archive" and syncs recursively and preserves symbolic links, special and device files, modification times, group, owner, and permissions.
+    # -z compresses files for faster network transfer
+    # -P combines the flags --progress and --partial. The first gives you a progress bar for transfers; the second allows you to resume interrupted transfers
+    # --delete removes files on receiving side that don't exist on the sending side
+    # --exclude lets you specify files/patterns you don't want to transfer
+    sync = ('rsync -vaz --delete --exclude ".DS_Store" www/ %s ') % (
+        app_config.S3_DEPLOY_URL # Deploy_URL DOES include the "user@server:" part, which we need for rsync
     )
     local(sync)
 
