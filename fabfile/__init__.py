@@ -151,7 +151,8 @@ def _deploy_to_graphics():
     # -P combines the flags --progress and --partial. The first gives you a progress bar for transfers; the second allows you to resume interrupted transfers
     # --delete removes files on receiving side that don't exist on the sending side
     # --exclude lets you specify files/patterns you don't want to transfer
-    sync = ('rsync -vaz --delete --exclude ".DS_Store" www/ %s ') % (
+    #sync = ('rsync -vaz --delete --exclude ".DS_Store" www/ %s ') % (
+    sync = ('rsync -vaz --exclude ".DS_Store" www/ %s ') % (
         app_config.S3_DEPLOY_URL # Deploy_URL DOES include the "user@server:" part, which we need for rsync
     )
     local(sync)

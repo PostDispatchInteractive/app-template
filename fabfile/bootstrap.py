@@ -2,8 +2,11 @@
 
 
 """
-Bootstrap the app-template. This module disables itself
-after execution.
+Bootstrap the app-template. This module disables itself after execution.
+
+(This is meant to be run BEFORE changing $NEW_PROJECT_SLUG. 
+ Once $NEW_PROJECT_SLUG is changed, bootstrap will no longer run.
+ See __init__.py for details.)
 """
 
 import os
