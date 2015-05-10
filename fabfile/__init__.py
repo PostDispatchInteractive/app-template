@@ -11,6 +11,7 @@ import app_config
 # Other fabfiles
 import assets
 import data
+import flat
 import issues
 import render
 import text
@@ -86,6 +87,23 @@ def branch(branch_name):
     """
     env.branch = branch_name
 
+"""
+Running the app
+"""
+@task
+def app(port='8000'):
+    """
+    Serve app.py.
+    """
+    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --debug --reload app:wsgi_app' % port)
+
+@task
+def public_app(port='8001'):
+    """
+    Serve public_app.py.
+    """
+    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --debug --reload public_app:wsgi_app' % port)
+
 @task
 def tests():
     """
@@ -100,41 +118,6 @@ Changes to deployment requires a full-stack test. Deployment
 has two primary functions: Pushing flat files to S3 and deploying
 code to a remote server if required.
 """
-def _deploy_to_s3(path='.gzip'):
-    """
-    Deploy project files to S3.
-    """
-    # Clear files that should never be deployed
-    local('rm -rf %s/live-data' % path)
-    local('rm -rf %s/sitemap.xml' % path)
-
-    exclude_flags = ''
-    include_flags = ''
-
-    with open('gzip_types.txt') as f:
-        for line in f:
-            exclude_flags += '--exclude "%s" ' % line.strip()
-            include_flags += '--include "%s" ' % line.strip()
-
-    exclude_flags += '--exclude "www/assets" '
-    
-    sync = ('aws s3 sync %s/ %s/ --acl "public-read" ' + exclude_flags + ' --cache-control "max-age=%i" --region "%s"') % (
-        path,
-        app_config.S3_DEPLOY_URL,
-        app_config.DEFAULT_MAX_AGE,
-        app_config.S3_BUCKET['region']
-    )
-
-    sync_gzip = ('aws s3 sync %s/ %s/ --acl "public-read" --content-encoding "gzip" --exclude "*" ' + include_flags + ' --cache-control "max-age=%i" --region "%s"') % (
-        path,
-        app_config.S3_DEPLOY_URL,
-        app_config.DEFAULT_MAX_AGE,
-        app_config.S3_BUCKET['region']
-    )
-
-    local(sync)
-    local(sync_gzip)
-
 def _deploy_to_graphics():
     # -p creates any uncreated directories in the path. avoids errors.
     # -m ### creates the directories with whatever permission level you specify
@@ -156,25 +139,6 @@ def _deploy_to_graphics():
         app_config.S3_DEPLOY_URL # Deploy_URL DOES include the "user@server:" part, which we need for rsync
     )
     local(sync)
-
-def _deploy_assets():
-    """
-    Deploy assets to S3.
-    """
-
-    sync_assets = 'rsync -a www/assets/ %s/assets/ --acl "public-read" --cache-control "max-age=%i" --region "%s"' % (
-        app_config.S3_DEPLOY_URL,
-        app_config.ASSETS_MAX_AGE,
-        app_config.S3_BUCKET['region']
-    )
-
-    local(sync_assets)
-
-def _gzip(in_path='www', out_path='.gzip'):
-    """
-    Gzips everything in www and puts it all in gzip
-    """
-    local('python gzip_assets.py %s %s' % (in_path, out_path))
 
 @task
 def update():
@@ -214,10 +178,28 @@ def deploy(remote='origin'):
 
     # update()
     render.render_all()
-    # _gzip('www', '.gzip')
-    # _deploy_to_s3()
-    # _deploy_assets()
+
+    # # Clear files that should never be deployed
+    # local('rm -rf www/live-data')
+
+    # flat.deploy_folder(
+    #     'www',
+    #     app_config.PROJECT_SLUG,
+    #     headers={
+    #         'Cache-Control': 'max-age=%i' % app_config.DEFAULT_MAX_AGE
+    #     },
+    #     ignore=['www/assets/*', 'www/live-data/*']
+    # )
+
+    # flat.deploy_folder(
+    #     'www/assets',
+    #     '%s/assets' % app_config.PROJECT_SLUG,
+    #     headers={
+    #         'Cache-Control': 'max-age=%i' % app_config.ASSETS_MAX_AGE
+    #     }
+    # )
     _deploy_to_graphics()
+
 
 """
 Destruction
@@ -239,13 +221,7 @@ def shiva_the_destroyer():
     )
 
     with settings(warn_only=True):
-        sync = 'aws s3 rm s3://%s/%s/ --recursive --region "%s"' % (
-            app_config.S3_BUCKET['bucket_name'],
-            app_config.PROJECT_SLUG,
-            app_config.S3_BUCKET['region']
-        ) 
-
-        local(sync)
+        flat.delete_folder(app_config.PROJECT_SLUG)
 
         if app_config.DEPLOY_TO_SERVERS:
             servers.delete_project()

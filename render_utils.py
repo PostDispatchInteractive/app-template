@@ -5,8 +5,8 @@ from datetime import datetime
 import json
 import time
 import urllib
+import subprocess
 
-from cssmin import cssmin
 from flask import Markup, g, render_template, request
 from slimit import minify
 from smartypants import smartypants
@@ -23,7 +23,7 @@ class BetterJSONEncoder(json.JSONEncoder):
             encoded_object = obj.isoformat()
         else:
             encoded_object = json.JSONEncoder.default(self, obj)
-    
+
         return encoded_object
 
 class Includer(object):
@@ -54,7 +54,7 @@ class Includer(object):
 
     def _relativize_path(self, path):
         relative_path = path
-        depth = len(request.path.split('/')) - (2 + self.asset_depth) 
+        depth = len(request.path.split('/')) - (2 + self.asset_depth)
 
         while depth > 0:
             relative_path = '../%s' % relative_path
@@ -139,16 +139,14 @@ class CSSIncluder(Includer):
 
         for src in self.includes:
 
-            if src.endswith('less'):
-                src_paths.append('%s' % src)
-                src = src.replace('less', 'css') # less/example.less -> css/example.css
-                src = '%s.less.css' % src[:-4]   # css/example.css -> css/example.less.css
-            else:
-                src_paths.append('www/%s' % src)
+            src_paths.append('%s' % src)
 
-            with codecs.open('www/%s' % src, encoding='utf-8') as f:
-                print '- compressing %s' % src
-                output.append(cssmin(f.read()))
+            try:
+                compressed_src = subprocess.check_output(["node_modules/less/bin/lessc", "-x", src])
+                output.append(compressed_src)
+            except:
+                print 'It looks like "lessc" isn\'t installed. Try running: "npm install"'
+                raise
 
         context = make_context()
         context['paths'] = src_paths
@@ -184,7 +182,11 @@ def make_context(asset_depth=0):
     """
     context = flatten_app_config()
 
-    context['COPY'] = copytext.Copy(app_config.COPY_PATH)
+    try:
+        context['COPY'] = copytext.Copy(app_config.COPY_PATH)
+    except copytext.CopyException:
+        pass
+
     context['JS'] = JavascriptIncluder(asset_depth=asset_depth)
     context['CSS'] = CSSIncluder(asset_depth=asset_depth)
 
@@ -217,8 +219,13 @@ def smarty_filter(s):
     if type(s) is not unicode:
         s = unicode(s)
 
+
     s = s.encode('utf-8')
     s = smartypants(s)
 
-    return Markup(s)
+    try:
+        return Markup(s)
+    except:
+        print 'This string failed to encode: %s' % s
+        return Markup(s)
 

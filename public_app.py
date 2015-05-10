@@ -1,21 +1,17 @@
 #!/usr/bin/env python
 
-import argparse
-import datetime
-import logging
-import json
-
-from flask import Flask, make_response, render_template
-from flask.ext.misaka import Misaka
-
 import app_config
-from render_utils import make_context, smarty_filter, urlencode_filter
+import datetime
+import json
+import logging
 import static
 
-app = Flask(__name__)
-app.config['PROPAGATE_EXCEPTIONS'] = True
+from flask import Flask, make_response, render_template
+from render_utils import make_context, smarty_filter, urlencode_filter
+from werkzeug.debug import DebuggedApplication
 
-Misaka(app)
+app = Flask(__name__)
+app.debug = app_config.DEBUG
 
 file_handler = logging.FileHandler('%s/public_app.log' % app_config.SERVER_LOG_PATH)
 file_handler.setLevel(logging.INFO)
@@ -50,14 +46,12 @@ def index():
 
     return make_response(render_template('index.html', **context))
 
-# Boilerplate
+# Enable Werkzeug debug pages
+if app_config.DEBUG:
+    wsgi_app = DebuggedApplication(app, evalex=False)
+else:
+    wsgi_app = app
+
+# Catch attempts to run the app directly
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-p', '--port')
-    args = parser.parse_args()
-    server_port = 8000
-
-    if args.port:
-        server_port = int(args.port)
-
-    app.run(host='0.0.0.0', port=server_port, debug=app_config.DEBUG)
+    print 'This command has been removed! Please run "fab public_app" instead!'
