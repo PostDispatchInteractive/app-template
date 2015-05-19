@@ -36,7 +36,8 @@ def setup():
     clone_repo()
     checkout_latest()
     install_requirements()
-    setup_logs()
+    # requires use of sudo
+    #setup_logs()
 
 def create_directories():
     """
@@ -45,7 +46,8 @@ def create_directories():
     require('settings', provided_by=['production', 'staging'])
 
     run('mkdir -p %(SERVER_PROJECT_PATH)s' % app_config.__dict__)
-    run('mkdir -p /var/www/uploads/%(PROJECT_FILENAME)s' % app_config.__dict__)
+    # we don't have permissions to make directories within /var/. I'm also not sure what this directory is even for.
+    #run('mkdir -p /var/www/uploads/%(PROJECT_FILENAME)s' % app_config.__dict__)
 
 def create_virtualenv():
     """

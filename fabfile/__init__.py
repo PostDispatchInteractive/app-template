@@ -2,7 +2,7 @@
 
 import os
 
-from fabric.api import local, require, settings, task
+from fabric.api import local, require, settings, task, run
 from fabric.state import env
 from termcolor import colored
 
@@ -35,6 +35,8 @@ env.forward_agent = True
 
 env.hosts = []
 env.settings = None
+env.shell = "/usr/local/bin/bash -c"
+
 
 """
 Environments
@@ -119,14 +121,13 @@ has two primary functions: Pushing flat files to S3 and deploying
 code to a remote server if required.
 """
 def _deploy_to_graphics():
+    require('settings', provided_by=['production', 'staging'])
     # -p creates any uncreated directories in the path. avoids errors.
     # -m ### creates the directories with whatever permission level you specify
-    mkdir = ('ssh %s@%s mkdir -p -m 755 %s ') % (
-        app_config.S3_USER,
-        app_config.S3_BUCKET['bucket_name'],
+    mkdir = ('mkdir -p -m 755 %s ') % (
         app_config.S3_BASE_URL # Base_URL doesn't include the "user@server:" part
     )
-    local(mkdir)
+    run(mkdir)
 
     # -v verbose mode
     # -a stands for "archive" and syncs recursively and preserves symbolic links, special and device files, modification times, group, owner, and permissions.
@@ -139,6 +140,39 @@ def _deploy_to_graphics():
         app_config.S3_DEPLOY_URL # Deploy_URL DOES include the "user@server:" part, which we need for rsync
     )
     local(sync)
+
+
+def _install_crontab():
+    """
+    Install cron jobs
+    """
+    require('settings', provided_by=['production', 'staging'])
+    # What this command does: 
+    # 1. Test first if crontab.txt exists (using if/then/fi shell-scripting syntax) in project's server directory
+    # 2. If it exists, then load crontab.txt job into crontab
+    croncmd = ('if test -e %s/crontab.txt; then crontab %s/crontab.txt; fi') % (
+        SERVER_REPOSITORY_PATH, # This points to the project's directory on the server.
+        SERVER_REPOSITORY_PATH
+    )
+    run(croncmd)
+
+
+def _uninstall_crontab():
+    """
+    Remove previously-installed cron jobs
+    """
+    require('settings', provided_by=['production', 'staging'])
+    # Adapted from ideas in this blog post: http://theunixtips.com/bash-automate-cron-job-maintenance/
+    # What the pipe chain does: 
+    # 1. List existing crontab entries 
+    # 2. Remove ANY lines containing PROJECT_FILENAME
+    # 3. Pipe this now-edited data back into the crontab
+    croncmd = ('crontab -l | grep -v %s | crontab - ') % (
+        app_config.PROJECT_FILENAME # The project's filename should be unique (ie "elections14"). Any line in the crontab containing this string will be removed.
+    )
+    run(croncmd)
+
+
 
 @task
 def update():
@@ -167,16 +201,17 @@ def deploy(remote='origin'):
         servers.checkout_latest(remote)
 
         servers.fabcast('text.update')
-        servers.fabcast('assets.sync')
+        #servers.fabcast('assets.sync')
         servers.fabcast('data.update')
 
         if app_config.DEPLOY_CRONTAB:
-            servers.install_crontab()
+            # servers.install_crontab()
+            _servers.install_crontab()
 
         if app_config.DEPLOY_SERVICES:
             servers.deploy_confs()
 
-    # update()
+    update()
     render.render_all()
 
     # # Clear files that should never be deployed
@@ -227,7 +262,8 @@ def shiva_the_destroyer():
             servers.delete_project()
 
             if app_config.DEPLOY_CRONTAB:
-                servers.uninstall_crontab()
+                # servers.uninstall_crontab()
+                _uninstall_crontab()
 
             if app_config.DEPLOY_SERVICES:
                 servers.nuke_confs()

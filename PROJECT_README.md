@@ -1,8 +1,3 @@
-Copyright 2015 NPR.  All rights reserved.  No part of these materials may be reproduced, modified, stored in a retrieval system, or retransmitted, in any form or by any means, electronic, mechanical or otherwise, without prior written permission from NPR.
-
-(Want to use this code? Send an email to nprapps@npr.org!)
-
-
 $NEW_PROJECT_SLUG
 ========================
 
@@ -31,7 +26,7 @@ $NEW_PROJECT_SLUG
 What is this?
 -------------
 
-**TKTK: Describe $NEW_PROJECT_SLUG here.**
+This is a St. Louis Post-Dispatch interactive project, built using a modified version of NPR's [app template](https://github.com/nprapps/app-template/)
 
 Assumptions
 -----------
@@ -41,9 +36,8 @@ The following things are assumed to be true in this documentation.
 * You are running OSX.
 * You are using Python 2.7. (Probably the version that came OSX.)
 * You have [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installed and working.
-* You have NPR's AWS credentials stored as environment variables locally.
 
-For more details on the technology stack used with the app-template, see our [development environment blog post](http://blog.apps.npr.org/2013/06/06/how-to-setup-a-developers-environment.html).
+For more details on the technology stack used with the app-template, see NPR's [development environment blog post](http://blog.apps.npr.org/2013/06/06/how-to-setup-a-developers-environment.html).
 
 What's in here?
 ---------------
