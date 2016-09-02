@@ -19,43 +19,40 @@ NAMES
 """
 # Project name to be used in urls
 # Use dashes, not underscores!
-PROJECT_SLUG = 'tk-name'
+PROJECT_SLUG = '$NEW_PROJECT_SLUG'
 
 # Project name to be used in file paths
-PROJECT_FILENAME = 'tk-name'
+PROJECT_FILENAME = '$NEW_PROJECT_FILENAME'
 
 # The name of the repository containing the source
-REPOSITORY_NAME = 'tk-name'
+REPOSITORY_NAME = '$NEW_REPOSITORY_NAME'
 GITHUB_USERNAME = 'PostDispatchInteractive'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
 # Project name used for assets rig
 # Should stay the same, even if PROJECT_SLUG changes
-ASSETS_SLUG = 'crime'
+ASSETS_SLUG = '$NEW_PROJECT_SLUG'
 
 """
 DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
-    'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'graphics.stltoday.com',
-    'app_dir': 'apps'
+    'app_dir': 'apps',
+    'region': 'us-east-1'
 }
 
 STAGING_S3_BUCKET = {
     'bucket_name': 'staging.graphics.stltoday.com',
-    'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'staging.graphics.stltoday.com',
-    'app_dir': 'apps'
+    'app_dir': 'apps',
+    'region': 'us-east-1'
 }
 
 ASSETS_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
-    'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'graphics.stltoday.com',
-    'app_dir': 'apps'
+    'app_dir': 'apps',
+    'region': 'us-east-1'
 }
 
 S3_USER = 'newsroom'
@@ -95,18 +92,18 @@ SERVER_SERVICES = [
 ]
 
 # These variables will be set at runtime. See configure_targets() below
-S3_BUCKET = None 
-S3_BASE_URL = None 
+S3_BUCKET = None
+S3_BASE_URL = None
 S3_DEPLOY_URL = None
 SERVERS = []
 SERVER_BASE_URL = None
-SERVER_LOG_PATH = None 
+SERVER_LOG_PATH = None
 DEBUG = True
 
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_KEY = '1rJgvGFjwcOy_RBDHuRzCtbY0akqeTC2GPQxfVf4KZUE'
+COPY_GOOGLE_DOC_KEY = '0AlXMOHKxzQVRdHZuX1UycXplRlBfLVB0UVNldHJYZmc'
 COPY_PATH = 'data/copy.xlsx'
 
 """
@@ -169,21 +166,19 @@ def configure_targets(deployment_target):
     if deployment_target == 'production':
         S3_BUCKET = PRODUCTION_S3_BUCKET
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = PRODUCTION_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
-        #DISQUS_SHORTNAME = 'npr-news'
         DEBUG = False
         ASSETS_MAX_AGE = 86400
     elif deployment_target == 'staging':
         S3_BUCKET = STAGING_S3_BUCKET
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = STAGING_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
-        #DISQUS_SHORTNAME = 'nprviz-test'
         DEBUG = True
         ASSETS_MAX_AGE = 20
     else:
@@ -193,7 +188,6 @@ def configure_targets(deployment_target):
         SERVERS = []
         SERVER_BASE_URL = 'http://127.0.0.1:8001/%s' % PROJECT_SLUG
         SERVER_LOG_PATH = '/tmp'
-        #DISQUS_SHORTNAME = 'nprviz-test'
         DEBUG = True
         ASSETS_MAX_AGE = 20
 
