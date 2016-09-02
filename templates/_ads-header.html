@@ -1,0 +1,41 @@
+<!-- BEGIN: AD CODE for head of index.html (assume jquery is on the page) -->
+<script src="//c.amazon-adsystem.com/aax2/amzn_ads.js" type="text/javascript"></script>
+<script>try{amznads.getAds('3266');}catch(e){}</script>
+<script src="//www.googletagservices.com/tag/js/gpt.js"></script>
+<script src="//leessp-d.openx.net/w/1.0/jstag?nc=8438-Lee"></script>
+<script>
+var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    var __tnt = __tnt || {};
+    __tnt.ads = __tnt.ads || {};
+    __tnt.ads.dfp = __tnt.ads.dfp || {};
+    __tnt.ads.dfp.slots = __tnt.ads.dfp.slots || {};
+    __tnt.ads.dfp.targeting = __tnt.ads.dfp.targeting || {};
+
+    /** TBD: k is the keywords for ad targeting. */
+    __tnt.ads.dfp.targeting.k = [{%if neighborhood%}'{{nhd_slug}}',{%endif%}'crime'];
+
+    /** TBD: identify page as living on graphics server, needs to use a keyword of index or asset depending on page type. */
+    __tnt.ads.dfp.targeting.page=["app-graphics",{%if neighborhood%}'asset'{%else%}'index'{%endif%}];
+
+    /** TBD: Needs to be changed to the appropriate BLOX section tag. */
+    __tnt.ads.dfp.ad_unit = "/8438/stltoday.com/news/local/crime-and-courts";
+</script>
+<!-- BEGIN Krux Control -->
+<script class="kxct" data-id="Jac3W00y" data-timing="async" data-version="1.9" type="text/javascript">
+window.Krux||((Krux=function(){Krux.q.push(arguments)}).q=[]);(function(){var k=document.createElement('script');
+k.type='text/javascript';k.async=true;var m,src=(m=location.href.match(/\bkxsrc=([^&]+)/))&&decodeURIComponent(m[1]);
+k.src=/^https?:\/\/([a-z0-9_\-\.]+\.)?krxd\.net(:\d{1,5})?\//i.test(src) ? src : src === "disable" ? "" :
+(location.protocol === "https:" ? "https:" : "http:") + "//cdn.krxd.net/controltag?confid=Jac3W00y";
+var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(k,s);}());
+</script>
+<!-- END Krux Control -->
+<style>
+/** ads.css */
+.text-center{text-align:center}
+@media (max-width:767px) {.hidden-xs {display:none!important}}
+@media (min-width:768px) and (max-width:991px) {.hidden-sm {display:none!important}}
+@media (min-width:992px) and (max-width:1199px) {.hidden-md {display:none!important}}
+@media (min-width:1200px) {.hidden-lg {display:none!important}}
+</style>
+<!-- END: AD CODE -->

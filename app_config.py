@@ -19,20 +19,20 @@ NAMES
 """
 # Project name to be used in urls
 # Use dashes, not underscores!
-PROJECT_SLUG = '$NEW_PROJECT_SLUG'
+PROJECT_SLUG = 'tk-name'
 
 # Project name to be used in file paths
-PROJECT_FILENAME = '$NEW_PROJECT_FILENAME'
+PROJECT_FILENAME = 'tk-name'
 
 # The name of the repository containing the source
-REPOSITORY_NAME = '$NEW_REPOSITORY_NAME'
+REPOSITORY_NAME = 'tk-name'
 GITHUB_USERNAME = 'PostDispatchInteractive'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
 # Project name used for assets rig
 # Should stay the same, even if PROJECT_SLUG changes
-ASSETS_SLUG = '$NEW_PROJECT_SLUG'
+ASSETS_SLUG = 'crime'
 
 """
 DEPLOYMENT
@@ -95,18 +95,18 @@ SERVER_SERVICES = [
 ]
 
 # These variables will be set at runtime. See configure_targets() below
-S3_BUCKET = None
-S3_BASE_URL = None
+S3_BUCKET = None 
+S3_BASE_URL = None 
 S3_DEPLOY_URL = None
 SERVERS = []
 SERVER_BASE_URL = None
-SERVER_LOG_PATH = None
+SERVER_LOG_PATH = None 
 DEBUG = True
 
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_KEY = '0AlXMOHKxzQVRdHZuX1UycXplRlBfLVB0UVNldHJYZmc'
+COPY_GOOGLE_DOC_KEY = '1rJgvGFjwcOy_RBDHuRzCtbY0akqeTC2GPQxfVf4KZUE'
 COPY_PATH = 'data/copy.xlsx'
 
 """

@@ -1,0 +1,150 @@
+#left-rail {
+    position: relative;
+    top: 0;
+    left: 0;
+    display: flex;
+    float: left;
+    margin-top: 0px;
+    width: 300px;
+    flex-flow: column;
+
+    // Order
+    #notes                  { order: 1; }
+    #social                 { order: 2; }
+    #neighborhood-dropdowns { order: 3; }
+    #related                { order: 4; }
+
+    @media (max-width: 800px) {
+        position: relative;
+        top: 0;
+        float: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        #notes { order: 3; }
+        #social { order: 2; }
+        #neighborhood-dropdowns { order: 1; }
+    }
+
+    h1 {
+        margin: 1rem 0 0.5rem;
+        font-weight: @font-bold;
+        font-size: 4.5rem;
+        line-height: 4.5rem;
+
+        @media (max-width: 836px) {
+            font-size: 3.125rem;
+            line-height: 3.125rem;
+        }
+        @media (max-width:480px) {
+            font-size: 1.625rem;
+            line-height: 1.625rem;
+        }
+    }
+
+    h2 {
+        margin: 1em 0px 0.5em 0px;
+        font-size: @font-size-base;
+    }
+
+    h3 {
+        margin: 2rem 0 0.75rem;
+        text-transform: uppercase;
+        font-weight: @font-normal;
+        font-size: 1.125rem;
+
+        @media (max-width: 836px) {
+            font-size: 0.875rem;
+        }
+    }
+
+    p {
+        margin: 1em 0;
+        text-align: middle;
+        font-weight: @font-normal;
+        font-size: 1.125rem;
+
+        @media (max-width: 480px) {
+            font-size: @font-size-base;
+        }
+
+        i {
+            font-weight: @font-bold;
+            font-style: @style-normal;
+        }
+    }
+
+    #notes {
+        position: relative;
+    }
+
+    #social {
+
+        i {
+            display: inline-block;
+            margin-right: 1em;
+            padding: 0px;
+            vertical-align: middle;
+            font-size: @font-size-lg;
+            transition: .2s all ease-out;
+
+            @media (max-width: 640px) {
+                font-size: @font-size-base;
+            }
+        }
+
+        a {
+            text-decoration: none;
+        }
+    }
+
+    #neighborhood-dropdowns {
+        position: relative;
+
+        #neighborhood-dropdown {
+            display: none;
+        }
+
+        #neighborhood-list {
+            display: block;
+            margin-left: 0px;
+            padding-left: 0px;
+            list-style: none;
+
+            -webkit-column-count: 2;
+               -moz-column-count: 2;
+                    column-count: 2;
+
+            -webkit-column-gap: 1rem;
+               -moz-column-gap: 1rem;
+                    column-gap: 1rem;
+
+            li {
+                margin: 0px;
+                padding-bottom: 0.4rem;
+                padding-left: 0px;
+                font-size: @font-size-xxs;
+                line-height: @sm-line-height;
+                page-break-inside: avoid;
+                    break-inside: avoid;
+
+                -webkit-margin-before: 0;
+                -webkit-margin-after: 0;
+                -webkit-column-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 836px) {
+            margin-top: 1.875rem;
+        }
+
+        @media (max-width: 480px) {
+            margin-top: 1.125rem;
+        }
+
+        @media (max-width: 800px) {
+            #neighborhood-dropdown { display: block; }
+            #neighborhood-list     { display: none; }
+        }
+    }
+}

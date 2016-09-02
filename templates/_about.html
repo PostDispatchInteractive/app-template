@@ -1,0 +1,28 @@
+<h1>About this app</h1>
+<h3>Data</h3>
+<ul>
+	<li>The St. Louis Crime Tracker is built using data from the St. Louis Metropolitan Police Department's <a href="http://slmpd.org/CrimeReport.aspx">crime reports</a>.</li>
+	<li>We update the Crime Tracker each month after SLMPD releases the previous month's crime report.</li>
+	<li>This data reflects only reported crimes. Not all crimes are reported to the police.</li>
+	<li>This data includes only more serious <a href="http://www.ucrdatatool.gov/offenses.cfm">Part I</a> crimes, based on FBI Uniform Crime reporting standards.</li>
+</ul>
+
+<h3>Per-capita crime rates</h3>
+<ul>
+	<li>Per-capita crime rates are based on neighborhood populations, which come with some important caveats:
+		<ul>
+			<li>The population totals we use to calculate per-capita crime rates are derived from the 2010 Census. Obviously, these rates do not factor in changes that have occurred since 2010.</li>
+			<li>Daytime and nighttime populations of neighborhoods can be significantly higher than the residential population, which can skew crime rates upward. For example, the Downtown and Downtown West neighborhoods regularly have the some of the highest per-capita crime rates in the city, mostly due to the large influx of people who don't live in the area.</li>
+		</ul>
+	</li>
+	<li>We do not calculate per-capita crime rates for parks or neighborhoods with fewer than 300 residents.</li>
+</ul>
+
+<h3>Neighborhood incident maps</h3>
+<ul>
+	<li>For most incidents, police crime reports include X- and Y- coordinates for an incident. We convert the police-provided coordinates into latitude and longitude to generate markers for those incidents.</li>
+	<li>For some incidents, police omit coordinates but still provide an address or an intersection. In these cases we generate markers by submitting the address to a geocoding service.</li>
+	<li>Police sometimes mark an incident as taking place in a particular neighborhood, but the coordinates and/or the address they provide place the incident within an adjacent neighborhood's boundaries. We are aware of this discrepancy, but do not attempt to correct it on the map.</li>
+	<li>In cases of rape, police reports round off addresses in order to avoid identifying victims. For example, "the 2300 block of Fake Street" instead of "2356 Fake Street."</li>
+	<li>Incidents which lack coordinates or addresses in the police report have been omitted from the map.</li>
+</ul>

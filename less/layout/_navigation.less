@@ -1,0 +1,148 @@
+/*----------------------------------
+NAVIGATION
+----------------------------------*/
+
+header {
+    position: relative;
+    top: 0;
+    left: 0;
+    z-index: 2000;
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 3.5rem;
+    background: @color-black;
+    color: @color-white;
+
+    a {
+        text-decoration: none;
+
+        &:visited,
+        &:hover,
+        &:link {
+            color: @color-white;
+        }
+    }
+
+    h1 {
+        position: relative;
+        display: inline-block;
+        float: left;
+        margin: 0px;
+        padding: 0px 0px 0px 0.75rem;
+        width: 100%;
+        height: 3.5rem;
+        vertical-align: middle;
+        text-transform: uppercase;
+        font-weight: @font-bold;
+        font-size: @font-size-lg;
+        line-height: 3rem;
+
+        @media (max-width:640px) {
+            font-size: @font-size-base;
+        }
+
+        a {
+            display: block;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        img {
+            display: inline-block;
+            margin-right: 0.375rem;
+            height: 32px;
+            height: 2rem;
+            vertical-align: middle;
+
+            @media (max-width: 640px) {
+                height: 1.25rem;
+            }
+        }
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+            color: @color-white;
+
+            // This may want to be removed
+            // &.stl {
+            //     display: none;
+            // }
+
+            // @media (min-width: 0px) {
+            //     &.stl,
+            //     &.st-louis {
+            //         display: none;
+            //     }
+            // }
+
+            // @media (min-width: 460px) {
+            //     &.stl      { display: inline-block; }
+            //     &.st-louis { display: none; }
+            // }
+
+            // @media (min-width: 524px) {
+            //     &.stl      { display: none; }
+            //     &.st-louis { display: inline-block; }
+            // }
+
+            // // Font size increases at this breakpoint
+            // @media (min-width: 640px) {
+            //     &.stl      { display: inline-block; }
+            //     &.st-louis { display: none; }
+            // }
+
+            // @media (min-width: 800px) {
+            //     &.stl      { display: none; }
+            //     &.st-louis { display: inline-block; }
+            // }
+        }
+    }
+
+    .header-buttons {
+        position: absolute;
+        right: 10px;
+        display: none;
+        margin: 0px auto;
+        font-size: @font-size-lg;
+        line-height: 3rem;
+
+        @media (max-width: 640px) {
+            font-size: @font-size-base;
+        }
+
+        i {
+            display: inline-block;
+            padding: 0px;
+            vertical-align: middle;
+            font-size: @font-size-lg;
+            -webkit-transition: .2s all ease-out;
+               -moz-transition: .2s all ease-out;
+                -ms-transition: .2s all ease-out;
+                    transition: .2s all ease-out;
+
+            @media (max-width: 640px) {
+                font-size: @font-size-base;
+            }
+        }
+
+        span {
+            display: inline-block;
+            margin: 0px 0.375rem;
+            vertical-align: middle;
+            text-transform: uppercase;
+            font-size: @font-size-base;
+
+            @media (max-width: 640px) {
+                font-size: @font-size-sm;
+            }
+
+            // iPhone is 320, but let's set the threshold a bit higher to hide the Near You text.
+            @media (max-width: 380px) {
+                display: none;
+            }
+        }
+    }
+}

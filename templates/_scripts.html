@@ -1,0 +1,32 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.2.0/ZeroClipboard.min.js"></script>
+
+<!-- Optional scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.2/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.20/topojson.min.js"></script>
+
+
+<script>
+/**
+* @desc console shim for IE, implements a dummy console object for IE when the dev tools window is not open.
+*/
+(function(b) {
+	function c() {}
+	for (var a, d = {}, e = ["memory"], f = "assert clear count debug dir dirxml error exception group groupCollapsed groupEnd info log markTimeline profile profiles profileEnd show table time timeEnd timeline timelineEnd timeStamp trace warn".split(" "); a = e.pop();) b[a] = b[a] || d;
+		for (; a = f.pop();) b[a] = b[a] || c
+	})(this.console = this.console || {});
+</script>
+
+ <!-- Issues here -->
+ {{ JS.push('js/ads.js') }}
+ {{ JS.push('js/analytics.js') }}
+ {{ JS.render('js/app-header.min.js') }}
+ {{ JS.render('js/app-footer.min.js') }}
+
+ <script type="text/javascript">
+    $(ANALYTICS.setupChartbeat);
+</script>

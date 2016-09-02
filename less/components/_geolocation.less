@@ -1,0 +1,50 @@
+#geolocation-error {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 9999;
+    display: none;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: @color-white;
+    text-align: center;
+
+    h1, h3 {
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
+    }
+
+    h1 {
+        margin-right: 3rem;
+        margin-left: 3rem;
+    }
+
+    select {
+        display: block;
+        margin: 0px auto 2rem auto;
+        color: @color-black;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 3rem;
+        height: 3rem;
+        border-radius: 100%;
+        line-height: 3rem;
+
+        .fa {
+            width: 100%;
+            height: 100%;
+            border-radius: 1.5rem; /* or 50% width & line-height */
+            text-align: center;
+            font-size: 2rem;
+            line-height: inherit;
+
+            &:hover {
+                background-color: rgba(50, 50, 50, 0.9);
+                cursor: pointer;
+            }
+        }
+    }
+}
