@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!--[if lte IE 8 ]><html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<!--<![endif]-->
+
+<head>
+    <!-- META TAGS -->
+    {% include '_meta.html' %}
+
+    <title>Search | {{ COPY.content.project_name }}</title>
+
+    <!-- SOCIAL TAGS -->
+    {% include '_social_tags.html' %}
+
+    <!-- FONTS -->
+    {% include '_fonts.html' %}
+
+    <!-- CSS -->
+    {{ CSS.push('less/app.less') }}
+    {{ CSS.push('less/framework.less') }}
+    {{ CSS.render('css/app.min.css') }}
+    
+
+    <!-- SCRIPTS -->
+    <!-- Javascript -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://graphics.stltoday.com/bin/isotope/isotope.pkgd.min.js" type="text/javascript"></script>
+
+    <!-- ADS -->
+    {% include '_ads_header.html' %}
+
+</head>
+<body class="prettify">
+    {% include '_google_tag_manager.html' %}
+
+    <div class="navbar">
+        {#<a href="{{ COPY.content.project_url }}" target="_parent">#}
+        <a href="{{ COPY.content.project_url }}" target="_parent">
+            <div class="title">
+                <img src="{{ COPY.content.project_url }}/img/stltoday-logo.png" />
+                <span>Ian Froeb's STL <i class="num">100</i></span>
+            </div>
+        </a>
+        <div class="social-buttons">
+            <a class="facebook popup" href="http://www.facebook.com/share.php?u={{COPY.share.share_url}}">
+                <i class="fa fa-facebook"></i>
+            </a>
+            <a class="twitter popup" href="http://twitter.com/share?text=.@stltoday%20presents%20@ianfroeb's%20%23stl100:%20The%20100%20best%20restaurants%20in%20St.%20Louis%20right%20now%20-&url={{COPY.share.share_url}}">
+                <i class="fa fa-twitter"></i>
+            </a>
+            <a class="email" href="mailto:?subject=Ian Froeb's STL 100&body={{COPY.share.share_url}}">
+                <i class="fa fa-envelope"></i>
+            </a>
+        </div>
+        {#<a href="{{ COPY.content.project_url }}/search.html" target="_parent">#}
+        <a href="search.html" target="_parent">
+            <div class="search"><i class="fa fa-search"></i> Custom search</div>
+        </a>
+    </div>
+
+
+    <div id="content" class="container search">
+
+        <div id="search" class="container home">
+
+            <div class="filters">
+
+                <div class="ui-group desktop">
+                    <h3>Location</h3>
+                    <div class="button-group js-radio-button-group" data-filter-group="location">
+                        <button class="button is-checked" data-filter="">All</button>
+                        <!-- <button class="button" data-filter=".nearme">Near me</button> -->
+                        <button class="button" data-filter=".within-1">Within 1 mile</button>
+                        <button class="button" data-filter=".within-3">Within 3 miles</button>
+                        <button class="button" data-filter=".within-5">Within 5 miles</button>
+                    </div> <!--.button-group-->
+                </div> <!--.ui-group-->
+
+                <div class="ui-group desktop">
+                    <h3>Price</h3>
+                    <div class="button-group js-radio-button-group" data-filter-group="price">
+                        <button class="button is-checked" data-filter="">All</button>
+                        <button class="button" data-filter=".punder-15">Under $15</button>
+                        <button class="button" data-filter=".p15-30">$15 to $30</button>
+                        <button class="button" data-filter=".p30-45">$30 to $45</button>
+                        <button class="button" data-filter=".p45-up">$45 and up</button>
+                    </div> <!--.button-group-->
+                </div> <!--.ui-group-->
+
+                <div class="ui-group desktop">
+                    <h3>Cuisine</h3>
+                    <div class="button-group js-radio-button-group" data-filter-group="cuisine">
+                        <button class="button is-checked" data-filter="">All</button>
+                        <!-- <button class="button" data-filter=".afghan">Afghan</button> -->
+                        <button class="button" data-filter=".bakery-dessert">Bakery &amp; Dessert</button>
+                        <button class="button" data-filter=".bar-grill">Bar &amp; Grill</button>
+                        <button class="button" data-filter=".barbecue">Barbecue</button>
+                        <!-- <button class="button" data-filter=".bosnian">Bosnian</button> -->
+                        <button class="button" data-filter=".breakfast">Breakfast</button>
+                        <button class="button" data-filter=".burgers">Burgers</button>
+                        <button class="button" data-filter=".cajun-creole">Cajun/Creole</button>
+                        <button class="button" data-filter=".chinese">Chinese</button>
+                        <button class="button" data-filter=".classic-fine-dining">Classic Fine Dining</button>
+                        <button class="button" data-filter=".contemporary-american">Contemporary American</button>
+                        <button class="button" data-filter=".deli">Deli</button>
+                        <button class="button" data-filter=".diner">Diner</button>
+                        <button class="button" data-filter=".ethiopian">Ethiopian</button>
+                        <button class="button" data-filter=".filipino">Filipino</button>
+                        <button class="button" data-filter=".food-truck">Food Truck</button>
+                        <button class="button" data-filter=".french">French</button>
+                        <button class="button" data-filter=".fried-chicken">Fried Chicken</button>
+                        <button class="button" data-filter=".german">German</button>
+                        <!-- <button class="button" data-filter=".greek">Greek</button> -->
+                        <button class="button" data-filter=".indian">Indian</button>
+                        <button class="button" data-filter=".italian">Italian</button>
+                        <!-- <button class="button" data-filter=".japanese">Japanese</button> -->
+                        <button class="button" data-filter=".korean">Korean</button>
+                        <button class="button" data-filter=".latin-american">Latin American</button>
+                        <button class="button" data-filter=".lebanese">Lebanese</button>
+                        <button class="button" data-filter=".mediterranean">Mediterranean</button>
+                        <button class="button" data-filter=".mexican">Mexican</button>
+                        <button class="button" data-filter=".middle-eastern">Middle-Eastern</button>
+                        <button class="button" data-filter=".pan-asian">Pan-Asian</button>
+                        <!-- <button class="button" data-filter=".persian">Persian</button> -->
+                        <button class="button" data-filter=".pizza">Pizza</button>
+                        <button class="button" data-filter=".pub-fare">Pub Fare</button>
+                        <button class="button" data-filter=".russian">Russian</button>
+                        <button class="button" data-filter=".sandwiches">Sandwiches</button>
+                        <button class="button" data-filter=".seafood">Seafood</button>
+                        <button class="button" data-filter=".small-plates">Small Plates</button>
+                        <button class="button" data-filter=".soul-food">Soul Food</button>
+                        <button class="button" data-filter=".southern">Southern</button>
+                        <button class="button" data-filter=".southwestern">Southwestern</button>
+                        <button class="button" data-filter=".steak-house">Steak House</button>
+                        <!-- <button class="button" data-filter=".sushi">Sushi</button> -->
+                        <button class="button" data-filter=".taiwanese">Taiwanese</button>
+                        <button class="button" data-filter=".tex-mex">Tex-Mex</button>
+                        <button class="button" data-filter=".thai">Thai</button>
+                        <!-- <button class="button" data-filter=".turkish">Turkish</button> -->
+                        <button class="button" data-filter=".vegetarian">Vegetarian</button>
+                        <button class="button" data-filter=".vietnamese">Vietnamese</button>
+                    </div> <!--.button-group-->
+                </div> <!--.ui-group-->
+
+
+                <div class="ui-group mobile location">
+                    <select class="option-set clearfix" data-filter-group="location">
+                        <option value="*" data-filter="" class="disabled-select">Location</option>
+                        <option value="*" data-filter="">All</option>
+                        <!-- <option data-filter=".nearme">Near me</option> -->
+                        <option data-filter=".within-1">Within 1 mile</option>
+                        <option data-filter=".within-3">Within 3 miles</option>
+                        <option data-filter=".within-5">Within 5 miles</option>
+                    </select>
+                </div> <!--.ui-group-->
+
+                <div class="ui-group mobile price">
+                    <select class="option-set clearfix" data-filter-group="price">
+                        <option value="*" data-filter="" class="disabled-select">Price</option>
+                        <option value="*" data-filter="">All</option>
+                        <option data-filter=".punder-15">Under $15</option>
+                        <option data-filter=".p15-30">$15 to $30</option>
+                        <option data-filter=".p30-45">$30 to $45</option>
+                        <option data-filter=".p45-up">$45 and up</option>
+                    </select>
+                </div><!--.ui-group-->
+
+                <div class="ui-group mobile cuisine">
+                    <select class="option-set clearfix" data-filter-group="cuisine">
+                        <option value="*" data-filter="" class="disabled-select">Cuisine</option>
+                        <option value="*" data-filter="">All</option>
+                        <!-- <option data-filter=".afghan">Afghan</option> -->
+                        <option data-filter=".bakery-dessert">Bakery &amp; Dessert</option>
+                        <option data-filter=".bar-grill">Bar &amp; Grill</option>
+                        <option data-filter=".barbecue">Barbecue</option>
+                        <!-- <option data-filter=".bosnian">Bosnian</option> -->
+                        <option data-filter=".breakfast">Breakfast</option>
+                        <option data-filter=".burgers">Burgers</option>
+                        <option data-filter=".cajun-creole">Cajun/Creole</option>
+                        <option data-filter=".chinese">Chinese</option>
+                        <option data-filter=".classic-fine-dining">Classic Fine Dining</option>
+                        <option data-filter=".contemporary-american">Contemporary American</option>
+                        <option data-filter=".deli">Deli</option>
+                        <option data-filter=".diner">Diner</option>
+                        <option data-filter=".ethiopian">Ethiopian</option>
+                        <option data-filter=".filipino">Filipino</option>
+                        <option data-filter=".food-truck">Food Truck</option>
+                        <option data-filter=".french">French</option>
+                        <option data-filter=".fried-chicken">Fried Chicken</option>
+                        <option data-filter=".german">German</option>
+                        <!-- <option data-filter=".greek">Greek</option> -->
+                        <option data-filter=".indian">Indian</option>
+                        <option data-filter=".italian">Italian</option>
+                        <!-- <option data-filter=".japanese">Japanese</option> -->
+                        <option data-filter=".korean">Korean</option>
+                        <option data-filter=".latin-american">Latin American</option>
+                        <option data-filter=".lebanese">Lebanese</option>
+                        <option data-filter=".mediterranean">Mediterranean</option>
+                        <option data-filter=".mexican">Mexican</option>
+                        <option data-filter=".middle-eastern">Middle-Eastern</option>
+                        <option data-filter=".pan-asian">Pan-Asian</option>
+                        <!-- <option data-filter=".persian">Persian</option> -->
+                        <option data-filter=".pizza">Pizza</option>
+                        <option data-filter=".pub-fare">Pub Fare</option>
+                        <option data-filter=".russian">Russian</option>
+                        <option data-filter=".sandwiches">Sandwiches</option>
+                        <option data-filter=".seafood">Seafood</option>
+                        <option data-filter=".small-plates">Small Plates</option>
+                        <option data-filter=".soul-food">Soul Food</option>
+                        <option data-filter=".southern">Southern</option>
+                        <option data-filter=".southwestern">Southwestern</option>
+                        <option data-filter=".steak-house">Steak House</option>
+                        <!-- <option data-filter=".sushi">Sushi</option> -->
+                        <option data-filter=".taiwanese">Taiwanese</option>
+                        <option data-filter=".tex-mex">Tex-Mex</option>
+                        <option data-filter=".thai">Thai</option>
+                        <!-- <option data-filter=".turkish">Turkish</option> -->
+                        <option data-filter=".vegetarian">Vegetarian</option>
+                        <option data-filter=".vietnamese">Vietnamese</option>
+                    </select>
+                </div><!--.ui-group-->
+
+
+            </div> <!--#filters-->
+
+            <div class="isotope">
+                {% for row in COPY.restaurants %}
+                <div class="col grid {{row.cuisineclass}} {{row.priceclass}}" data-latlngs="{{row.latlng}}">
+                    <a href="{{ COPY.content.project_url }}/restaurants/{{row.slug}}/" target="_parent">
+                        <img alt="{{row.photo_alt}}" data-sizes="auto" src="{{ COPY.content.project_url }}/restaurants/{{row.slug}}/small1.jpg" />
+                        <h3>{{row.name}}</h3>
+                    </a>
+                </div>
+                {% endfor %}
+            </div> <!--.isotope-->
+        </div> <!--#search-->
+
+        <div class="home-advert" style="margin-top: 3rem;">
+            <div class="text-center hidden-xs">
+                <div id="fixed-leaderboard-top"
+                     class="dfp-ad"
+                     data-dfp-custom-pos="fixed-leaderboard-top, btf"
+                     data-dfp-size="[728,90]">
+                </div>
+            </div>
+            <div class="text-center hidden-sm hidden-md hidden-lg">
+                <div id="fixed-leaderboard-top-mobile"
+                     class="dfp-ad"
+                     data-dfp-custom-pos="fixed-leaderboard-top, btf"
+                     data-dfp-size="[320,50]">
+                </div>
+            </div>
+        </div>
+
+
+<!--         <footer>
+            <div class="credits">
+                <h6>Credits</h6>
+                <p><b>Editing:</b> Ian Froeb, Gabe Hartwig, Jody Mitori, Bob Rose</p>
+                <p><b>Photo editing:</b> Hillary Levin</p>
+                <p><b>Development:</b> Josh Renaud</p>
+                <p class="published">Published {{COPY.content.publish_date}}</p>
+            </div>
+            <div class="logo">
+                <a href="http://www.stltoday.com" data-action="Click Logo"><img src="{{ COPY.content.cdn_url }}/img/banner.png?2" alt="Post-Dispatch Logo">
+                </a>
+            </div>
+            <div class="copyright">
+                <p>&copy; <a href="http://stltoday.com/help/copyright" target="_blank">Copyright</a> 2016, <a href="http://stltoday.com">stltoday.com</a>
+                </p>
+                <p>900 N. Tucker Blvd. St. Louis, MO</p>
+            </div>
+        </footer> -->
+    </div> <!--#content -->
+
+
+    {% include '_geolocation_fallback.html' %}
+
+    {{ JS.push('js/app.js') }}
+    {{ JS.push('js/plugins.js') }}
+
+    {% block extra_foot_js %}{% endblock extra_foot_js %}
+
+    {{ JS.render('js/app-footer.min.js') }}
+
+    {% include '_ads_footer.html' %}
+
+</body>
+</html>

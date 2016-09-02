@@ -39,23 +39,20 @@ DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
-    'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'graphics.stltoday.com',
-    'app_dir': 'apps'
+    'app_dir': 'apps',
+    'region': 'us-east-1'
 }
 
 STAGING_S3_BUCKET = {
     'bucket_name': 'staging.graphics.stltoday.com',
-    'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'staging.graphics.stltoday.com',
-    'app_dir': 'apps'
+    'app_dir': 'apps',
+    'region': 'us-east-1'
 }
 
 ASSETS_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
-    'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'graphics.stltoday.com',
-    'app_dir': 'apps'
+    'app_dir': 'apps',
+    'region': 'us-east-1'
 }
 
 S3_USER = 'newsroom'
@@ -189,7 +186,7 @@ def configure_targets(deployment_target):
     if deployment_target == 'production':
         S3_BUCKET = PRODUCTION_S3_BUCKET
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = PRODUCTION_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
@@ -199,7 +196,7 @@ def configure_targets(deployment_target):
     elif deployment_target == 'staging':
         S3_BUCKET = STAGING_S3_BUCKET
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = STAGING_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
