@@ -114,26 +114,6 @@ SHARING
 """
 SHARE_URL = 'http://%s/%s/' % (PRODUCTION_S3_BUCKET['bucket_name'], PROJECT_SLUG)
 
-"""
-ADS
-"""
-
-
-"""
-SERVICES
-"""
-NPR_GOOGLE_ANALYTICS = {
-    'ACCOUNT_ID': 'UA-54716522-2',
-    'DOMAIN': PRODUCTION_S3_BUCKET['bucket_name'],
-    'TOPICS': '' # e.g. '[1014,3,1003,1002,1001]'
-}
-
-VIZ_GOOGLE_ANALYTICS = {
-    'ACCOUNT_ID': 'UA-54716522-2',
-}
-
-DISQUS_API_KEY = ''
-DISQUS_UUID = '$NEW_DISQUS_UUID'
 
 """
 OAUTH
