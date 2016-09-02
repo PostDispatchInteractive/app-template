@@ -1,0 +1,113 @@
+/*----------------------------------
+FOOTER
+----------------------------------*/
+
+footer {
+    // The position is for display purposes only so that the footer hugs the bottom of the page
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    clear: both;
+    margin-top: 50px;
+    width: 100%;
+    background: @color-primary;
+    color: @color-white;
+    font-weight: @font-normal;
+    font-family: @font-sans;
+
+    .credits {
+        margin: 0.75rem auto;
+        padding: 1.5rem 0 0.75rem;
+        width: 92.5%;
+
+        @media (min-width: 640px) {
+            margin-bottom: 1.5rem;
+            width: 400px;
+        }
+
+        h6 {
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: .02em;
+            font-weight: 700;
+            font-size: 1.25em;
+            font-family: @font-sans;
+
+            @media (min-width: 640px) {
+                margin: 0 auto;
+            }
+        }
+        p {
+            margin: 0;
+            padding: 4px 0;
+            font-size: .8em;
+        }
+
+        p.published {
+            margin-top: 0.75rem;
+            letter-spacing: .02em;
+            font-style: @style-italic;
+            font-size: .6em;
+
+            @media (min-width: 640px) {
+                display: block;
+            }
+        }
+
+        b {
+            letter-spacing: .02em;
+        }
+
+        a {
+            color: @color-grey-light;
+            text-decoration: none;
+        }
+    }
+
+    .logo {
+        margin: 0.75rem auto;
+        width: 75%;
+
+        @media (min-width: 640px) {
+            width: 35%;
+        }
+        img {
+            position: relative;
+            display: block;
+            margin: 0 auto;
+            max-width: 100%;
+
+            @media (min-width: 992px) {
+                max-width: 300px;
+            }
+        }
+    }
+
+    .copyright {
+        margin: 0 auto;
+        padding: 0 0 60px;
+        width: 92.5%;
+        text-align: center;
+        font-size: .65em;
+        line-height: 1.7em;
+
+        @media (min-width: 640px) {
+            width: 100%;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        a {
+            color: @color-grey-light;
+            text-decoration: none;
+            letter-spacing: .02em;
+            font-weight: @font-bold;
+            font-size: inherit;
+            font-family: @font-sans;
+            line-height: 1.55em;
+            cursor: pointer;
+        }
+    }
+}
