@@ -19,40 +19,43 @@ NAMES
 """
 # Project name to be used in urls
 # Use dashes, not underscores!
-PROJECT_SLUG = '$NEW_PROJECT_SLUG'
+PROJECT_SLUG = 'tk-name'
 
 # Project name to be used in file paths
-PROJECT_FILENAME = '$NEW_PROJECT_FILENAME'
+PROJECT_FILENAME = 'tk-name'
 
 # The name of the repository containing the source
-REPOSITORY_NAME = '$NEW_REPOSITORY_NAME'
+REPOSITORY_NAME = 'tk-name'
 GITHUB_USERNAME = 'PostDispatchInteractive'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
 # Project name used for assets rig
 # Should stay the same, even if PROJECT_SLUG changes
-ASSETS_SLUG = '$NEW_PROJECT_SLUG'
+ASSETS_SLUG = 'crime'
 
 """
 DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
-    'app_dir': 'apps',
-    'region': 'us-east-1'
+    'server_domain': 'graphics.stltoday.com',
+    'server_dir': 'graphics.stltoday.com',
+    'app_dir': 'apps'
 }
 
 STAGING_S3_BUCKET = {
     'bucket_name': 'staging.graphics.stltoday.com',
-    'app_dir': 'apps',
-    'region': 'us-east-1'
+    'server_domain': 'graphics.stltoday.com',
+    'server_dir': 'staging.graphics.stltoday.com',
+    'app_dir': 'apps'
 }
 
 ASSETS_S3_BUCKET = {
     'bucket_name': 'graphics.stltoday.com',
-    'app_dir': 'apps',
-    'region': 'us-east-1'
+    'server_domain': 'graphics.stltoday.com',
+    'server_dir': 'graphics.stltoday.com',
+    'app_dir': 'apps'
 }
 
 S3_USER = 'newsroom'
@@ -92,18 +95,18 @@ SERVER_SERVICES = [
 ]
 
 # These variables will be set at runtime. See configure_targets() below
-S3_BUCKET = None
-S3_BASE_URL = None
+S3_BUCKET = None 
+S3_BASE_URL = None 
 S3_DEPLOY_URL = None
 SERVERS = []
 SERVER_BASE_URL = None
-SERVER_LOG_PATH = None
+SERVER_LOG_PATH = None 
 DEBUG = True
 
 """
 COPY EDITING
 """
-COPY_GOOGLE_DOC_KEY = '0AlXMOHKxzQVRdHZuX1UycXplRlBfLVB0UVNldHJYZmc'
+COPY_GOOGLE_DOC_KEY = '1rJgvGFjwcOy_RBDHuRzCtbY0akqeTC2GPQxfVf4KZUE'
 COPY_PATH = 'data/copy.xlsx'
 
 """
@@ -186,7 +189,7 @@ def configure_targets(deployment_target):
     if deployment_target == 'production':
         S3_BUCKET = PRODUCTION_S3_BUCKET
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = PRODUCTION_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
@@ -196,7 +199,7 @@ def configure_targets(deployment_target):
     elif deployment_target == 'staging':
         S3_BUCKET = STAGING_S3_BUCKET
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
-        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
+        S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = STAGING_SERVERS
         SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
