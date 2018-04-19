@@ -1,0 +1,44 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jquery": true
+    },
+    "globals": {
+        "d3": false,
+        "colorbrewer": false,
+        "topojson": false,
+        "L": false,
+        "Highcharts": false
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [
+            "error",
+            "tab",
+            {
+                "MemberExpression": "off"
+            }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-unused-vars": [
+            "warn", 
+            { 
+                "vars": "local", 
+                "args": "none", 
+                "ignoreRestSiblings": false 
+            }
+        ]
+    }
+}
