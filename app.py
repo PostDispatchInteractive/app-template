@@ -29,11 +29,26 @@ def index():
     Example view demonstrating rendering a simple HTML page.
     """
     context = make_context()
+    context['directory_depth'] = 0
 
     with open('data/featured.json') as f:
         context['featured'] = json.load(f)
 
     return make_response(render_template('index.html', **context))
+
+@app.route('/404.html')
+def four_oh_four():
+    context = make_context()
+    context['directory_depth'] = 0
+
+    return make_response(render_template('404.html', **context))
+
+@app.errorhandler(404)
+def page_not_found(e):
+    context = make_context()
+
+    return make_response(render_template('404.html', **context))
+
 
 app.register_blueprint(static.static)
 app.register_blueprint(oauth.oauth)

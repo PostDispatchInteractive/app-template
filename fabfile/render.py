@@ -48,53 +48,20 @@ def less():
             print 'It looks like "lessc" isn\'t installed. Try running: "npm install"'
             raise
 
-@task
-def jst():
-    """
-    Render Underscore templates to a JST package.
-    """
-    try:
-        local('node_modules/universal-jst/bin/jst.js --template underscore jst www/js/templates.js')
-    except:
-        print 'It looks like "jst" isn\'t installed. Try running: "npm install"'
-
-@task
-def app_config_js():
-    """
-    Render app_config.js to file.
-    """
-    from static import _app_config_js
-
-    with _fake_context('/js/app_config.js'):
-        response = _app_config_js()
-
-    with open('www/js/app_config.js', 'w') as f:
-        f.write(response.data)
-
-@task
-def copytext_js():
-    """
-    Render COPY to copy.js.
-    """
-    from static import _copy_js
-
-    with _fake_context('/js/copytext.js'):
-        response = _copy_js()
-
-    with open('www/js/copy.js', 'w') as f:
-        f.write(response.data)
 
 @task(default=True)
-def render_all():
+def render_all( server_name=None, app_dir=None, project_slug=None ):
     """
     Render HTML templates and compile assets.
     """
     from flask import g
 
     less()
-    jst()
-    app_config_js()
-    copytext_js()
+
+    # Using server name, app dir, and project slug to construct Flask's SERVER_NAME and APPLICATION_ROOT.
+    # Setting these variables will ensure url_for() constructs correct URLs when deploying.
+    app.app.config['SERVER_NAME'] = server_name
+    app.app.config['APPLICATION_ROOT'] = '/' + app_dir + '/' + project_slug
 
     compiled_includes = {}
 
@@ -105,6 +72,11 @@ def render_all():
 
         # Skip utility views
         if name == 'static' or name.startswith('_'):
+            print 'Skipping %s' % name
+            continue
+
+        # Skip routes with any() construction: 
+        if 'any(' in rule_string:
             print 'Skipping %s' % name
             continue
 
