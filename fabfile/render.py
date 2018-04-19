@@ -60,8 +60,9 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
 
     # Using server name, app dir, and project slug to construct Flask's SERVER_NAME and APPLICATION_ROOT.
     # Setting these variables will ensure url_for() constructs correct URLs when deploying.
-    app.app.config['SERVER_NAME'] = server_name
-    app.app.config['APPLICATION_ROOT'] = '/' + app_dir + '/' + project_slug
+    if server_name and app_dir and project_slug:
+        app.app.config['SERVER_NAME'] = server_name
+        app.app.config['APPLICATION_ROOT'] = '/' + app_dir + '/' + project_slug
 
     compiled_includes = {}
 
