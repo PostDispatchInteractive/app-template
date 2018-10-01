@@ -17,6 +17,7 @@ import render
 import text
 import utils
 import lint
+import spreadsheet
 
 if app_config.DEPLOY_TO_SERVERS:
     import servers
