@@ -11,6 +11,7 @@ $NEW_PROJECT_SLUG
 * [Run the project](#run-the-project)
 * [COPY configuration](#copy-configuration)
 * [COPY editing](#copy-editing)
+* [Open Linked Google Spreadsheet](#open-linked-google-spreadsheet)
 * [Arbitrary Google Docs](#arbitrary-google-docs)
 * [Run Python tests](#run-python-tests)
 * [Run Javascript tests](#run-javascript-tests)
@@ -224,6 +225,23 @@ about_body
 about_url
 download_label
 download_url
+```
+
+Open Linked Google Spreadsheet
+------------------------------
+Want to edit/view the app's linked google spreadsheet, we got you covered.
+ We have created a simple Fabric task ```spreadsheet```. It will try to find and open the app's linked google spreadsheet on your default browser.
+ ```
+fab spreadsheet
+```
+ If you are working with other arbitraty google docs that are not involved with the COPY rig you can pass a key as a parameter to have that spreadsheet opened instead on your browser
+ ```
+fab spreadsheet:$GOOGLE_DOC_KEY
+```
+ For example:
+ ```
+fab spreadsheet:12_F0yhsXEPN1w3GOlQB4_NKGadXiRLOa9l-HQu5jSL8
+// Will open 270 project number-crunching spreadsheet
 ```
 
 Arbitrary Google Docs
