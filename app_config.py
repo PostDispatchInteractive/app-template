@@ -45,9 +45,9 @@ PRODUCTION_S3_BUCKET = {
 }
 
 STAGING_S3_BUCKET = {
-    'bucket_name': 'staging.graphics.stltoday.com',
+    'bucket_name': 'staging-graphics.stltoday.com',
     'server_domain': 'graphics.stltoday.com',
-    'server_dir': 'staging.graphics.stltoday.com',
+    'server_dir': 'staging-graphics.stltoday.com',
     'app_dir': 'apps'
 }
 
@@ -64,7 +64,7 @@ DEFAULT_MAX_AGE = 20
 ASSETS_MAX_AGE = 86400
 
 PRODUCTION_SERVERS = ['graphics.stltoday.com']
-STAGING_SERVERS = ['staging.graphics.stltoday.com']
+STAGING_SERVERS = ['staging-graphics.stltoday.com']
 
 # Should code be deployed to the web/cron servers?
 DEPLOY_TO_SERVERS = False
