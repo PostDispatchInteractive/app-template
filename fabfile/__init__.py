@@ -135,9 +135,9 @@ def _deploy_to_graphics():
     # -z compresses files for faster network transfer
     # -P combines the flags --progress and --partial. The first gives you a progress bar for transfers; the second allows you to resume interrupted transfers
     # --delete removes files on receiving side that don't exist on the sending side
-    # --exclude lets you specify files/patterns you don't want to transfer
-    #sync = ('rsync -vaz --delete --exclude ".DS_Store" www/ %s ') % (
-    sync = ('rsync -vaz --exclude ".DS_Store" www/ %s ') % (
+    # --exclude lets you specify a file/pattern you don't want to transfer
+    # --exclude-from lets you specify a textfile containing multiple files/patterns you don't want to transer
+    sync = ('rsync -vaz --exclude-from="confs/exclude-from.txt" www/ %s ') % (
         app_config.S3_DEPLOY_URL # Deploy_URL DOES include the "user@server:" part, which we need for rsync
     )
     local(sync)
@@ -148,7 +148,7 @@ def _install_crontab():
     Install cron jobs
     """
     require('settings', provided_by=['production', 'staging'])
-    # What this command does: 
+    # What this command does:
     # 1. Test first if crontab.txt exists (using if/then/fi shell-scripting syntax) in project's server directory
     # 2. If it exists, then load crontab.txt job into crontab
     croncmd = ('if test -e %s/crontab.txt; then crontab %s/crontab.txt; fi') % (
@@ -164,8 +164,8 @@ def _uninstall_crontab():
     """
     require('settings', provided_by=['production', 'staging'])
     # Adapted from ideas in this blog post: http://theunixtips.com/bash-automate-cron-job-maintenance/
-    # What the pipe chain does: 
-    # 1. List existing crontab entries 
+    # What the pipe chain does:
+    # 1. List existing crontab entries
     # 2. Remove ANY lines containing PROJECT_FILENAME
     # 3. Pipe this now-edited data back into the crontab
     croncmd = ('crontab -l | grep -v %s | crontab - ') % (
@@ -215,25 +215,6 @@ def deploy(remote='origin'):
     update()
     render.render_all()
 
-    # # Clear files that should never be deployed
-    # local('rm -rf www/live-data')
-
-    # flat.deploy_folder(
-    #     'www',
-    #     app_config.PROJECT_SLUG,
-    #     headers={
-    #         'Cache-Control': 'max-age=%i' % app_config.DEFAULT_MAX_AGE
-    #     },
-    #     ignore=['www/assets/*', 'www/live-data/*']
-    # )
-
-    # flat.deploy_folder(
-    #     'www/assets',
-    #     '%s/assets' % app_config.PROJECT_SLUG,
-    #     headers={
-    #         'Cache-Control': 'max-age=%i' % app_config.ASSETS_MAX_AGE
-    #     }
-    # )
     _deploy_to_graphics()
 
 
@@ -268,4 +249,3 @@ def shiva_the_destroyer():
 
             if app_config.DEPLOY_SERVICES:
                 servers.nuke_confs()
-
