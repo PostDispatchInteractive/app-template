@@ -8,7 +8,6 @@ import urllib
 import subprocess
 
 from flask import Markup, g, render_template, request
-from jsmin import jsmin
 from smartypants import smartypants
 
 import app_config
@@ -110,10 +109,16 @@ class JavascriptIncluder(Includer):
 
         for src in self.includes:
             src_paths.append('www/%s' % src)
+            print '- compressing %s' % src
 
-            with codecs.open('www/%s' % src, encoding='utf-8') as f:
-                print '- compressing %s' % src
-                output.append(jsmin(f.read()))
+            # Switched from the Python jsmin module to Babel. It doesn't *truly* minify, but it allows me
+            # to compile ES2015 javascript down to ES5 that IE and other older browsers will accept.
+            try:
+                compressed_src = subprocess.check_output(["node_modules/.bin/babel", 'www/'+src, "--minified"]).decode('utf-8')
+                output.append(compressed_src)
+            except:
+                print 'It looks like "babel" isn\'t installed. Try running: "npm install"'
+                raise
 
         context = make_context()
         context['paths'] = src_paths

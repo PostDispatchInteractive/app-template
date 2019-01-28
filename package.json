@@ -2,8 +2,16 @@
     "name": "app-template",
     "version": "1.0.0",
     "dependencies": {
+        "@babel/polyfill": "^7.0.0",
+        "babel-core": "^6.26.3",
+        "babel-loader": "^8.0.2",
+        "babel-preset-env": "^1.7.0",
         "less": "~1.7.0",
-        "eslint": "~4.9.0",
         "universal-jst": "~1.0.5"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.0.0",
+        "@babel/core": "^7.0.0",
+        "@babel/preset-env": "^7.0.0"
     }
 }
