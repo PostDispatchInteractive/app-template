@@ -37,7 +37,7 @@ env.forward_agent = True
 
 env.hosts = []
 env.settings = None
-env.shell = "/usr/local/bin/bash -c"
+env.shell = "/usr/bin/env bash -c"
 
 
 """
@@ -137,7 +137,7 @@ def _deploy_to_graphics():
     # -P combines the flags --progress and --partial. The first gives you a progress bar for transfers; the second allows you to resume interrupted transfers
     # --delete removes files on receiving side that don't exist on the sending side
     # --exclude lets you specify a file/pattern you don't want to transfer
-    # --exclude-from lets you specify a textfile containing multiple files/patterns you don't want to transer
+    # --exclude-from lets you specify a textfile containing multiple files/patterns you don't want to transfer
     sync = ('rsync -vaz --exclude-from="confs/exclude-from.txt" www/ %s ') % (
         app_config.S3_DEPLOY_URL # Deploy_URL DOES include the "user@server:" part, which we need for rsync
     )
