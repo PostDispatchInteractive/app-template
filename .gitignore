@@ -13,11 +13,8 @@ var
 sdist
 develop-eggs
 .installed.cfg
-<<<<<<< HEAD
 lib/python2.7
-=======
 node_modules
->>>>>>> upstream/master
 
 # Installer logs
 pip-log.txt
