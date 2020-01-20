@@ -37,7 +37,6 @@ def go(github_username=app_config.GITHUB_USERNAME, repository_name=None):
     config['$NEW_PROJECT_SLUG'] = os.getcwd().split('/')[-1]
     config['$NEW_REPOSITORY_NAME'] = repository_name or config['$NEW_PROJECT_SLUG']
     config['$NEW_PROJECT_FILENAME'] = config['$NEW_PROJECT_SLUG'].replace('-', '_')
-    config['$NEW_DISQUS_UUID'] = str(uuid.uuid1())
 
     utils.confirm("Have you created a Github repository named \"%s\"?" % config['$NEW_REPOSITORY_NAME'])
 
