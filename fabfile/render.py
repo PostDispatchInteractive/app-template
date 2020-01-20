@@ -9,6 +9,9 @@ import os
 
 from fabric.api import local, task
 
+# This is needed in render_all() to minify the HTML content
+from htmlmin.main import minify
+
 import app
 
 def _fake_context(path):
@@ -108,6 +111,11 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
             content = view().data
 
             compiled_includes = g.compiled_includes
+
+        # Minify HTML. Comment out the next three lines if you don't want to minify.
+        content = unicode(content, "utf-8")
+        content = minify(content,remove_optional_attribute_quotes=False)
+        content = content.encode('utf-8')
 
         # Write rendered view
         # NB: Flask response object has utf-8 encoded the data
