@@ -112,7 +112,7 @@ COPY_PATH = 'data/copy.xlsx'
 """
 SHARING
 """
-SHARE_URL = 'http://%s/%s/' % (PRODUCTION_S3_BUCKET['bucket_name'], PROJECT_SLUG)
+SHARE_URL = 'https://%s/%s/' % (PRODUCTION_S3_BUCKET['bucket_name'], PROJECT_SLUG)
 
 
 """
@@ -163,7 +163,6 @@ def configure_targets(deployment_target):
     global SERVER_LOG_PATH
     global DEBUG
     global DEPLOYMENT_TARGET
-    global DISQUS_SHORTNAME
     global ASSETS_MAX_AGE
 
     if deployment_target == 'production':
@@ -171,7 +170,7 @@ def configure_targets(deployment_target):
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = PRODUCTION_SERVERS
-        SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
+        SERVER_BASE_URL = 'https://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
         DEBUG = False
         ASSETS_MAX_AGE = 86400
@@ -180,7 +179,7 @@ def configure_targets(deployment_target):
         S3_BASE_URL = '/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         S3_DEPLOY_URL = '%s@%s:/home/%s/%s/public_html/%s/%s' % (S3_USER, S3_BUCKET['server_domain'], S3_USER, S3_BUCKET['bucket_name'], S3_BUCKET['app_dir'], PROJECT_SLUG)
         SERVERS = STAGING_SERVERS
-        SERVER_BASE_URL = 'http://%s/%s' % (SERVERS[0], PROJECT_SLUG)
+        SERVER_BASE_URL = 'https://%s/%s' % (SERVERS[0], PROJECT_SLUG)
         SERVER_LOG_PATH = '/var/log/%s' % PROJECT_FILENAME
         DEBUG = True
         ASSETS_MAX_AGE = 20
