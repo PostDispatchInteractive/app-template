@@ -54,4 +54,4 @@ else:
 
 # Catch attempts to run the app directly
 if __name__ == '__main__':
-    print 'This command has been removed! Please run "fab public_app" instead!'
+    print('This command has been removed! Please run "fab public_app" instead!')

@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# This allows use of unicode characters in my comments below.
 
 import codecs
 from datetime import datetime
@@ -72,7 +74,7 @@ class Includer(object):
                 out_path = 'www/%s' % path
 
                 if path not in g.compiled_includes:
-                    print 'Rendering %s' % out_path
+                    print('Rendering %s' % out_path)
 
                     with codecs.open(out_path, 'w', encoding='utf-8') as f:
                         f.write(self._compress())
@@ -109,7 +111,7 @@ class JavascriptIncluder(Includer):
 
         for src in self.includes:
             src_paths.append('www/%s' % src)
-            print '- compressing %s' % src
+            print('- compressing %s' % src)
 
             # Switched from the Python jsmin module to Babel. It doesn't *truly* minify, but it allows me
             # to compile ES2015 javascript down to ES5 that IE and other older browsers will accept.
@@ -117,7 +119,7 @@ class JavascriptIncluder(Includer):
                 compressed_src = subprocess.check_output(["node_modules/.bin/babel", 'www/'+src, "--minified"]).decode('utf-8')
                 output.append(compressed_src)
             except:
-                print 'It looks like "babel" isn\'t installed. Try running: "npm install"'
+                print('It looks like "babel" isn\'t installed. Try running: "npm install"')
                 raise
 
         context = make_context()
@@ -150,7 +152,7 @@ class CSSIncluder(Includer):
                 compressed_src = subprocess.check_output(["node_modules/less/bin/lessc", "-x", src])
                 output.append(compressed_src)
             except:
-                print 'It looks like "lessc" isn\'t installed. Try running: "npm install"'
+                print('It looks like "lessc" isn\'t installed. Try running: "npm install"')
                 raise
 
         context = make_context()
@@ -197,6 +199,10 @@ def make_context(asset_depth=0):
 
     return context
 
+# --------------
+# CUSTOM FILTERS
+# --------------
+
 def urlencode_filter(s):
     """
     Filter to urlencode strings.
@@ -205,8 +211,8 @@ def urlencode_filter(s):
         s = s.unescape()
 
     # Evaulate COPY elements
-    if type(s) is not unicode:
-        s = unicode(s)
+    if type(s) is not str:
+        s = str(s)
 
     s = s.encode('utf8')
     s = urllib.quote_plus(s)
@@ -221,9 +227,8 @@ def smarty_filter(s):
         s = s.unescape()
 
     # Evaulate COPY elements
-    if type(s) is not unicode:
-        s = unicode(s)
-
+    if type(s) is not str:
+        s = str(s)
 
     s = s.encode('utf-8')
     s = smartypants(s)
@@ -231,6 +236,77 @@ def smarty_filter(s):
     try:
         return Markup(s)
     except:
-        print 'This string failed to encode: %s' % s
+        print('This string failed to encode: %s' % s)
         return Markup(s)
 
+def split_semicolon_filter(s):
+    """
+    Filter to take semicolon-delimited text and convert it to a list
+    """
+    if s is not None:
+        return s.strip().split(';')
+    return None
+
+def convert_to_slug(s):
+    """
+    Very simple filter to slugify a string
+    """
+    if s is not None:
+        return s.strip().lower().replace('.','').replace(' ','-').replace(',','-').replace('--','-')
+    return None
+
+def convert_to_int(s):
+    """
+    Filter to convert a string to an int    
+    """
+    if s is not None:
+        return int( s.strip() )
+    return None
+
+def nat_sort(l,k=None,r=False):
+    """
+    Filter to apply natsort to a list 
+    (This is a better way to sort for sorting strings with numbers)
+    """
+    from natsort import natsorted
+    if l is not None:
+        sl = []
+        # Create a list of tuples for sorting
+        for item in l:
+            key = item[k]
+            sl.append( (key, item) )
+        # Use natsort to naturally sort the tuples by the key field
+        sl = natsorted( sl, reverse=r )
+        # Convert list of tuples back into normal list (basically throw out the key)
+        sl = [ item[-1] for item in sl ]
+        return sl
+    return None
+
+def cache_bust_filter(s):
+    """
+    Filter to append a cache-busting timestamp to a URL
+    """
+    if type(s) == 'Markup':
+        s = s.unescape()
+
+    # Evaulate COPY elements
+    if type(s) is not str:
+        s = str(s)
+
+    timestamp = int(time.time())
+    return Markup( s + str('?') + str(timestamp) )
+
+
+# --------------
+# CUSTOM TESTS
+# --------------
+
+def contains(value,check):
+    if value is not None and check is not None:
+        # First, encode them all as ASCII to remove problematic unicode characters (e.g. Jefferson County Library District 8¢ for the Library)
+        # In Python3, this will convert them to bytes. So next, decode the bytes back to unicode text.
+        check = check.encode('ascii','ignore').decode('UTF-8')
+        value = value.encode('ascii','ignore').decode('UTF-8')
+        if str(check) in str(value):
+            return True
+    return False

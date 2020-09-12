@@ -29,7 +29,7 @@ def update_featured_social():
     secrets = app_config.get_secrets()
 
     # Twitter
-    print 'Fetching tweets...'
+    print('Fetching tweets...')
 
     twitter_api = Twitter(
         auth=OAuth(
@@ -106,7 +106,7 @@ def update_featured_social():
         })
 
     # Facebook
-    print 'Fetching Facebook posts...'
+    print('Fetching Facebook posts...')
 
     fb_api = GraphAPI(secrets['FACEBOOK_API_APP_TOKEN'])
 

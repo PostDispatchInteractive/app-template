@@ -31,7 +31,6 @@ class GoogleDoc(object):
 
     # You can change these with kwargs but it's not recommended.
     spreadsheet_url = 'https://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=%(key)s&exportFormat=%(format)s&gid=%(gid)s'
-    # new_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/%(key)s/export?format=%(format)s&id=%(key)s&gid=%(gid)s'
     new_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/%(key)s/export?format=%(format)s&id=%(key)s'
     auth = None
     email = os.environ.get('APPS_GOOGLE_EMAIL', None)

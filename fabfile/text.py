@@ -17,12 +17,12 @@ def update():
     Downloads a Google Doc as an Excel file.
     """
     if app_config.COPY_GOOGLE_DOC_KEY == None:
-        print colored('You have set COPY_GOOGLE_DOC_KEY to None. If you want to use a Google Sheet, set COPY_GOOGLE_DOC_KEY  to the key of your sheet in app_config.py', 'blue')
+        print(colored('You have set COPY_GOOGLE_DOC_KEY to None. If you want to use a Google Sheet, set COPY_GOOGLE_DOC_KEY  to the key of your sheet in app_config.py', 'blue'))
         return
     credentials = get_credentials()
     if not credentials:
-        print colored('No Google OAuth credentials file found.', 'yellow')
-        print colored('Run `fab app` and visit `http://localhost:8000` to generate credentials.', 'yellow')
+        print(colored('No Google OAuth credentials file found.', 'yellow'))
+        print(colored('Run `fab app` and visit `http://localhost:8000` to generate credentials.', 'yellow'))
         return
 
     get_document(app_config.COPY_GOOGLE_DOC_KEY, app_config.COPY_PATH)

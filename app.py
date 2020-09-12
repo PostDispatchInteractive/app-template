@@ -16,6 +16,12 @@ from flask import Flask, make_response, render_template
 from render_utils import make_context, smarty_filter, urlencode_filter
 from werkzeug.debug import DebuggedApplication
 
+# This is needed by the response_minify() function below
+from htmlmin.main import minify
+
+# This is needed by the less() function below
+from fabric.api import local
+
 app = Flask(__name__)
 app.debug = app_config.DEBUG
 
@@ -50,6 +56,38 @@ def page_not_found(e):
     return make_response(render_template('404.html', **context))
 
 
+@app.route('/css/<path:path>')
+def less(path):
+    """
+    Render LESS files to CSS.
+    """
+    file_prefix = path.split('.')[0]
+    srcfile = 'less/%s.less' % file_prefix
+    outfile = 'www/css/%s.min.css' % file_prefix
+    name = '%s.min.css' % file_prefix
+    try:
+        # run the LESS compiler, with --clean-css option set to minify, to generate static .css file
+        local('node_modules/less/bin/lessc --clean-css %s %s' % (srcfile, outfile))
+        # use Flask's send_from_directory to serve the static .css file
+        return send_from_directory('www/css', name)
+    except Exception as e:
+        print('It looks like "lessc" isn\'t installed. Try running: "npm install"')
+        print(e)
+
+@app.after_request
+def response_minify(response):
+    """
+    Minify html response to decrease site traffic
+    """
+    if response.content_type == u'text/html; charset=utf-8':
+        response.set_data(
+            minify(response.get_data(as_text=True))
+        )
+
+        return response
+    return response
+
+
 app.register_blueprint(static.static)
 app.register_blueprint(oauth.oauth)
 
@@ -61,4 +99,4 @@ else:
 
 # Catch attempts to run the app directly
 if __name__ == '__main__':
-    print 'This command has been removed! Please run "fab app" instead!'
+    print('This command has been removed! Please run "fab app" instead!')

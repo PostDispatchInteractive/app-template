@@ -9,15 +9,15 @@ from termcolor import colored
 import app_config
 
 # Other fabfiles
-import assets
-import data
-import flat
-import issues
-import render
-import text
-import utils
-import lint
-import spreadsheet
+from . import assets
+from . import data
+from . import flat
+from . import issues
+from . import render
+from . import text
+from . import utils
+from . import lint
+from . import spreadsheet
 
 if app_config.DEPLOY_TO_SERVERS:
     import servers
@@ -99,14 +99,14 @@ def app(port='8000'):
     """
     Serve app.py.
     """
-    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --debug --reload app:wsgi_app' % port)
+    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --reload app:wsgi_app' % port)
 
 @task
 def public_app(port='8001'):
     """
     Serve public_app.py.
     """
-    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --debug --reload public_app:wsgi_app' % port)
+    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --reload public_app:wsgi_app' % port)
 
 @task
 def tests():
@@ -183,7 +183,7 @@ def update():
     """
     text.update()
     # assets.sync()
-    data.update()
+    # data.update()
 
 @task
 def deploy(remote='origin'):
@@ -203,8 +203,8 @@ def deploy(remote='origin'):
         servers.checkout_latest(remote)
 
         servers.fabcast('text.update')
-        #servers.fabcast('assets.sync')
-        servers.fabcast('data.update')
+        # servers.fabcast('assets.sync')
+        # servers.fabcast('data.update')
 
         if app_config.DEPLOY_CRONTAB:
             # servers.install_crontab()
