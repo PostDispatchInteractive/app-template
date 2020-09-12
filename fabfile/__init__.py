@@ -27,7 +27,7 @@ if app_config.DEPLOY_CRONTAB:
 
 # Bootstrap can only be run once, then it's disabled
 if app_config.PROJECT_SLUG == '$NEW_PROJECT_SLUG':
-    from . import bootstrap
+    import bootstrap
 
 """
 Base configuration
