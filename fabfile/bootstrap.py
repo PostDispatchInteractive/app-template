@@ -57,7 +57,7 @@ def go(github_username=app_config.GITHUB_USERNAME, repository_name=None):
     local('rm -f *.pyc')
     local('rm -f LICENSE')
     local('git add .')
-    local('git add -f www/assets/assetsignore')
+    # local('git add -f www/assets/assetsignore')
     local('git commit -am "Initial import from app-template."')
     local('git remote add origin git@github.com:%s/%s.git' % (github_username, config['$NEW_REPOSITORY_NAME']))
     local('git push -u origin master')
