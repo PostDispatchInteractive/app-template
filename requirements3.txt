@@ -1,4 +1,4 @@
-Authomatic==1.0.0
+-e git+https://github.com/PostDispatchInteractive/authomatic.git@7ff4cba0ac0773cc547e7ed9a4ab06ccda346c5c#egg=Authomatic
 awscli==1.18.137
 bcdoc==0.16.0
 bcrypt==3.2.0
