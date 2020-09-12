@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import copy
-from io import StringIO
+from cStringIO import StringIO
 from fnmatch import fnmatch
 import gzip
 import hashlib
