@@ -116,7 +116,8 @@ class JavascriptIncluder(Includer):
             # Switched from the Python jsmin module to Babel. It doesn't *truly* minify, but it allows me
             # to compile ES2015 javascript down to ES5 that IE and other older browsers will accept.
             try:
-                compressed_src = subprocess.check_output(["node_modules/.bin/babel", 'www/'+src, "--minified"]).decode('utf-8')
+                compressed_src = subprocess.check_output(["node_modules/.bin/babel", 'www/'+src, "--minified"])
+                compressed_src = compressed_src.decode('utf-8')
                 output.append(compressed_src)
             except:
                 print('It looks like "babel" isn\'t installed. Try running: "npm install"')
@@ -150,6 +151,7 @@ class CSSIncluder(Includer):
 
             try:
                 compressed_src = subprocess.check_output(["node_modules/less/bin/lessc", "-x", src])
+                compressed_src = compressed_src.decode('utf-8')
                 output.append(compressed_src)
             except:
                 print('It looks like "lessc" isn\'t installed. Try running: "npm install"')
