@@ -8,18 +8,21 @@ Post-Dispatch app template
 * [Editing contexts / templates](#editing-contexts--templates)
 * [Things to remember](#things-to-remember)
 
+
 What is this?
 -------------
 
 This is a St. Louis Post-Dispatch interactive project, built using our modified version of NPR's [app template](https://github.com/nprapps/app-template/).
+
 
 Assumptions
 -----------
 
 To build an app using this app template, the following things must be true:
 
-* You are running MacOS X.
-* You are using Python 2.7.
+* You are running Mac OS X.
+* You have installed Python 3, via Homebrew
+* You have installed Node v14, via Homebrew
 * You have [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installed and working.
 
 If you need help to set up your Mac for coding/development, see NPR's [development environment blog post](http://blog.apps.npr.org/2013/06/06/how-to-setup-a-developers-environment.html).
@@ -40,20 +43,20 @@ This is something you need to do one time only on your development Mac.
 How to create an app
 --------------------
 
-1. Create a GitHub repo for your project. Note the name (e.g. `your-project-name`)
+1. Create a GitHub repo for your project. Use a unique, descriptive slug (e.g. `your-project-2020`)
 
 2. Clone the P-D app-template repo to your local drive as the basis for your new project:
 
 ```
-git clone git@github.com:PostDispatchInteractive/app-template.git your-project-name
+git clone git@github.com:PostDispatchInteractive/app-template.git your-project-2020
 ```
 
 3. Run the following commands to set up the new project.
 
 ```
-cd your-project-name
+cd your-project-2020
 
-mkvirtualenv your-project-name
+mkvirtualenv your-project-2020
 
 pip install -r requirements.txt
 
@@ -111,7 +114,6 @@ The index.html template:
 ```
 
 
-
 Fabric commands
 ---------------
 
@@ -133,13 +135,13 @@ fab app
 fab render
 ```
 
-4. Deploy the project to the P-D staging server (graphics.stltoday.com).
+4. Deploy the project to the P-D staging server (staging-graphics.stltoday.com).
 
 ```
 fab staging master deploy
 ```
 
-5. Deploy the project to the P-D production server (staging-graphics.stltoday.com).
+5. Deploy the project to the P-D production server (graphics.stltoday.com).
 
 ```
 fab production master deploy
