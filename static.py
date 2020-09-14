@@ -50,7 +50,7 @@ def _copy_js():
 @static.route('/<path:path>')
 def _static(path):
     try:
-        with open('www/%s' % path) as f:
+        with open('www/%s' % path, 'rb') as f:
             return make_response(f.read(), 200, { 'Content-Type': guess_type(path)[0] })
     except IOError:
         abort(404)
