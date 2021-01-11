@@ -115,7 +115,7 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
 
             view = _view_from_name(name)
 
-            content = view().data
+            content = view().data.decode('utf-8')
 
             compiled_includes = g.compiled_includes
 
