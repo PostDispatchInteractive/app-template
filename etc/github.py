@@ -14,7 +14,7 @@ def get_auth():
     """
     Construct a basic auth object from a username and password
     """
-    username = raw_input('Username: ')
+    username = input('Username: ')
     password = getpass.getpass('Password: ')
 
     auth = HTTPBasicAuth(username, password)
