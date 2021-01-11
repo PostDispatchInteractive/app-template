@@ -115,12 +115,15 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
 
             view = _view_from_name(name)
 
-            content = view().data.decode('utf-8')
+            content = view().data
 
             compiled_includes = g.compiled_includes
 
+        # Make sure content is a Unicode string, not bytes
+        if isinstance(content, (bytes, bytearray)):
+            content = content.decode('utf-8')
+
         # Minify HTML. Comment out the next two lines if you don't want to minify.
-        content = content.decode('utf-8')
         content = minify(content, remove_optional_attribute_quotes=False)
 
         # Write rendered view
