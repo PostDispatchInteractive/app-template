@@ -45,10 +45,10 @@ def update_featured_social():
     for i in range(1, 4):
         tweet_url = COPY['share']['featured_tweet%i' % i]
 
-        if isinstance(tweet_url, copytext.Error) or unicode(tweet_url).strip() == '':
+        if isinstance(tweet_url, copytext.Error) or str(tweet_url).strip() == '':
             continue
 
-        tweet_id = unicode(tweet_url).split('/')[-1]
+        tweet_id = str(tweet_url).split('/')[-1]
 
         tweet = twitter_api.statuses.show(id=tweet_id)
 
@@ -115,10 +115,10 @@ def update_featured_social():
     for i in range(1, 4):
         fb_url = COPY['share']['featured_facebook%i' % i]
 
-        if isinstance(fb_url, copytext.Error) or unicode(fb_url).strip() == '':
+        if isinstance(fb_url, copytext.Error) or str(fb_url).strip() == '':
             continue
 
-        fb_id = unicode(fb_url).split('/')[-1]
+        fb_id = str(fb_url).split('/')[-1]
 
         post = fb_api.get_object(fb_id)
         user  = fb_api.get_object(post['from']['id'])
