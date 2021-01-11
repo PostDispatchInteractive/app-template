@@ -21,7 +21,7 @@
 	})(this.console = this.console || {});
 </script>
 
- <!-- Issues here -->
- {{ JS.push('js/ads.js') }}
+ <!-- Combine and minify JS files  -->
+ {{ JS.push('js/app.js') }}
  {{ JS.render('js/app-header.min.js') }}
  {{ JS.render('js/app-footer.min.js') }}
