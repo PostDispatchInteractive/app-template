@@ -136,13 +136,13 @@ fab render
 4. Deploy the project to the P-D staging server (graphics.stltoday.com).
 
 ```
-fab staging master deploy
+fab staging main deploy
 ```
 
 5. Deploy the project to the P-D production server (staging-graphics.stltoday.com).
 
 ```
-fab production master deploy
+fab production main deploy
 ```
 
 

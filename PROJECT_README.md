@@ -306,7 +306,7 @@ Deploy to S3
 ------------
 
 ```
-fab staging master deploy
+fab staging main deploy
 ```
 
 Deploy to EC2
@@ -320,15 +320,15 @@ For running a Web application:
 
 * In ``app_config.py`` set ``DEPLOY_TO_SERVERS`` to ``True``.
 * Also in ``app_config.py`` set ``DEPLOY_WEB_SERVICES`` to ``True``.
-* Run ``fab staging master servers.setup`` to configure the server.
-* Run ``fab staging master deploy`` to deploy the app.
+* Run ``fab staging main servers.setup`` to configure the server.
+* Run ``fab staging main deploy`` to deploy the app.
 
 For running cron jobs:
 
 * In ``app_config.py`` set ``DEPLOY_TO_SERVERS`` to ``True``.
 * Also in ``app_config.py``, set ``INSTALL_CRONTAB`` to ``True``
-* Run ``fab staging master servers.setup`` to configure the server.
-* Run ``fab staging master deploy`` to deploy the app.
+* Run ``fab staging main servers.setup`` to configure the server.
+* Run ``fab staging main deploy`` to deploy the app.
 
 You can configure your EC2 instance to both run Web services and execute cron jobs; just set both environment variables in the fabfile.
 
@@ -370,7 +370,7 @@ Run a  remote fab command
 Sometimes it makes sense to run a fabric command on the server, for instance, when you need to render using a production database. You can do this with the `fabcast` fabric command. For example:
 
 ```
-fab staging master servers.fabcast:deploy
+fab staging main servers.fabcast:deploy
 ```
 
 If any of the commands you run themselves require executing on the server, the server will SSH into itself to run them.

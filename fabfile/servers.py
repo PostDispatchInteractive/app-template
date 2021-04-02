@@ -24,7 +24,7 @@ def setup():
     This does not setup services or push to S3. Run deploy() next.
     """
     require('settings', provided_by=['production', 'staging'])
-    require('branch', provided_by=['stable', 'master', 'branch'])
+    require('branch', provided_by=['stable', 'main', 'branch'])
 
     if not app_config.DEPLOY_TO_SERVERS:
         print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
@@ -75,7 +75,7 @@ def checkout_latest(remote='origin'):
     Checkout the latest source.
     """
     require('settings', provided_by=['production', 'staging'])
-    require('branch', provided_by=['stable', 'master', 'branch'])
+    require('branch', provided_by=['stable', 'main', 'branch'])
 
     run('cd %s; git fetch %s' % (app_config.SERVER_REPOSITORY_PATH, remote))
     run('cd %s; git checkout %s; git pull %s %s' % (app_config.SERVER_REPOSITORY_PATH, env.branch, remote, env.branch))

@@ -77,12 +77,20 @@ def stable():
     """
     env.branch = 'stable'
 
+# Map the legacy `master` to `main`
 @task
 def master():
     """
     Work on development branch.
     """
-    env.branch = 'master'
+    env.branch = 'main'
+
+@task
+def main():
+    """
+    Work on development branch.
+    """
+    env.branch = 'main'
 
 @task
 def branch(branch_name):
@@ -193,7 +201,7 @@ def deploy(remote='origin'):
     require('settings', provided_by=[production, staging])
 
     if app_config.DEPLOY_TO_SERVERS:
-        require('branch', provided_by=[stable, master, branch])
+        require('branch', provided_by=[stable, main, branch])
 
         if (app_config.DEPLOYMENT_TARGET == 'production' and env.branch != 'stable'):
             utils.confirm(
