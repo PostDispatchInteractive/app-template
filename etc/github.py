@@ -14,7 +14,7 @@ def get_auth():
     """
     Construct a basic auth object from a username and password
     """
-    username = raw_input('Username: ')
+    username = input('Username: ')
     password = getpass.getpass('Password: ')
 
     auth = HTTPBasicAuth(username, password)
@@ -25,7 +25,7 @@ def get_auth():
     if response.status_code == 401:
         otp = response.headers.get('X-Github-OTP')
         if otp and otp.startswith('required'):
-            print 'You are using 2-factor authentication. Please create a personal access token at https://github.com/settings/applications#personal-access-tokens and provide it here'
+            print('You are using 2-factor authentication. Please create a personal access token at https://github.com/settings/applications#personal-access-tokens and provide it here')
             access_token = raw_input('Personal access token: ')
             auth = HTTPBasicAuth(access_token, '')
         else:
@@ -55,10 +55,10 @@ def delete_existing_labels(auth):
     response = requests.get(url, auth=auth)
     labels = json.loads(response.content)
 
-    print 'Deleting %i labels' % len(labels)
+    print('Deleting %i labels' % len(labels))
 
     for label in labels:
-        print 'Deleting label %s' % label['name']
+        print('Deleting label %s' % label['name'])
 
         requests.delete(url + '/' + label['name'], auth=auth)
 
@@ -71,10 +71,10 @@ def create_labels(auth, filename='etc/default_labels.csv'):
     with open(filename) as f:
         labels = list(csv.DictReader(f))
 
-    print 'Creating %i labels' % len(labels)
+    print('Creating %i labels' % len(labels))
 
     for label in labels:
-        print 'Creating label "%s"' % label['name']
+        print('Creating label "%s"' % label['name'])
         data = json.dumps(label)
 
         requests.post(url, data=data, auth=auth)
@@ -88,10 +88,10 @@ def create_tickets(auth, filename='etc/default_tickets.csv'):
     with open(filename) as f:
         tickets = list(csv.DictReader(f))
 
-    print 'Creating %i tickets' % len(tickets)
+    print('Creating %i tickets' % len(tickets))
 
     for ticket in tickets:
-        print 'Creating ticket "%s"' % ticket['title']
+        print('Creating ticket "%s"' % ticket['title'])
 
         if ticket['labels']:
             ticket['labels'] = ticket['labels'].split(',')
@@ -116,10 +116,10 @@ def create_milestones(auth, filename='etc/default_milestones.csv'):
     with open(filename) as f:
         milestones = list(csv.DictReader(f))
 
-    print 'Creating %i milestones' % len(milestones)
+    print('Creating %i milestones' % len(milestones))
 
     for milestone in milestones:
-        print 'Creating milestone "%s"' % milestone['title']
+        print('Creating milestone "%s"' % milestone['title'])
 
         data = json.dumps(milestone)
 
@@ -131,13 +131,13 @@ def create_hipchat_hook(auth):
     """
     url = 'https://api.github.com/repos/%s/hooks' % get_repo_path()
 
-    print 'Creating Hipchat hook'
+    print('Creating Hipchat hook')
 
     auth_token = os.environ.get('HIPCHAT_AUTH_TOKEN', None)
     room = os.environ.get('HIPCHAT_ROOM_ID', None)
 
     if (not auth_token or not room):
-        print 'Skipping! (Not configured.)'
+        print('Skipping! (Not configured.)')
         return
 
     data = json.dumps({

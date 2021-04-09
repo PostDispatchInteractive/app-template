@@ -11,7 +11,7 @@ import boto
 from fabric.api import prompt, task
 import app_config
 from fnmatch import fnmatch
-import utils
+from . import utils
 
 ASSETS_ROOT = 'www/assets'
 
@@ -41,7 +41,7 @@ def sync():
                     break
 
             if ignore:
-                print 'Ignoring: %s' % full_path
+                print('Ignoring: %s' % full_path)
                 continue
 
             if name.lower() != name:
@@ -51,10 +51,10 @@ def sync():
 
     # Prevent case sensitivity differences between OSX and S3 from screwing us up
     if not_lowercase:
-        print 'The following filenames are not lowercase, please change them before running `assets.sync`:'
+        print('The following filenames are not lowercase, please change them before running `assets.sync`:')
 
         for name in not_lowercase:
-            print '    %s' % name
+            print('    %s' % name)
 
         return
 
@@ -74,7 +74,7 @@ def sync():
         if local_path == '%s/' % ASSETS_ROOT:
             continue
 
-        print local_path
+        print(local_path)
 
         if local_path in local_paths:
             # A file can only exist once, this speeds up future checks
@@ -95,7 +95,7 @@ def sync():
                     which, always = _assets_confirm(local_path)
 
                 if not which:
-                    print 'Cancelling!'
+                    print('Cancelling!')
 
                     return
 
@@ -120,13 +120,13 @@ def sync():
         key_name = local_path.replace(ASSETS_ROOT, app_config.ASSETS_SLUG, 1)
         key = bucket.get_key(key_name, validate=False)
 
-        print local_path
+        print(local_path)
 
         if not always:
             action, always = _assets_upload_confirm()
 
         if not action:
-            print 'Cancelling!'
+            print('Cancelling!')
 
             return
 
@@ -163,7 +163,7 @@ def rm(path):
         utils.confirm("You are about to destroy %i files. Are you sure?" % len(file_list))
 
         for local_path in file_list:
-            print local_path
+            print(local_path)
 
             if os.path.isdir(local_path):
                 file_list.extend(os.listdir(local_path))
@@ -187,7 +187,7 @@ def _assets_confirm(local_path):
     """
     Check with user about whether to keep local or remote file.
     """
-    print '--> This file has been changed locally and on S3.'
+    print('--> This file has been changed locally and on S3.')
     answer = prompt('Take remote [r] Take local [l] Take all remote [ra] Take all local [la] cancel', default='c')
 
     if answer == 'r':
@@ -202,7 +202,7 @@ def _assets_confirm(local_path):
     return (None, False)
 
 def _assets_upload_confirm():
-    print '--> This file does not exist on S3.'
+    print('--> This file does not exist on S3.')
     answer = prompt('Upload local copy [u] Delete local copy [d] Upload all [ua] Delete all [da] cancel', default='c')
 
     if answer == 'u':
@@ -220,7 +220,7 @@ def _assets_download(s3_key, local_path):
     """
     Utility method to download a single asset from S3.
     """
-    print '--> Downloading!'
+    print('--> Downloading!')
 
     dirname = os.path.dirname(local_path)
 
@@ -233,7 +233,7 @@ def _assets_upload(local_path, s3_key):
     """
     Utility method to upload a single asset to S3.
     """
-    print '--> Uploading!'
+    print('--> Uploading!')
 
     with open(local_path, 'rb') as f:
         local_md5 = s3_key.compute_md5(f)[0]
@@ -245,7 +245,7 @@ def _assets_delete(local_path, s3_key):
     """
     Utility method to delete assets both locally and remotely.
     """
-    print '--> Deleting!'
+    print('--> Deleting!')
 
     s3_key.delete()
     os.remove(local_path)

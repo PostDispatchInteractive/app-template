@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import copy
-from cStringIO import StringIO
+from io import StringIO
 from fnmatch import fnmatch
 import gzip
 import hashlib
@@ -60,9 +60,9 @@ def deploy_file(connection, src, dst, headers={}):
         local_md5 = local_md5.hexdigest()
 
         if local_md5 == s3_md5:
-            print 'Skipping %s (has not changed)' % src
+            print('Skipping %s (has not changed)' % src)
         else:
-            print 'Uploading %s --> %s (gzipped)' % (src, dst)
+            print('Uploading %s --> %s (gzipped)' % (src, dst))
             k.set_contents_from_string(output.getvalue(), file_headers, policy='public-read')
     # Non-gzip file
     else:
@@ -72,9 +72,9 @@ def deploy_file(connection, src, dst, headers={}):
             local_md5 = local_md5.hexdigest()
 
         if local_md5 == s3_md5:
-            print 'Skipping %s (has not changed)' % src
+            print('Skipping %s (has not changed)' % src)
         else:
-            print 'Uploading %s --> %s' % (src, dst)
+            print('Uploading %s --> %s' % (src, dst))
             k.set_contents_from_filename(src, file_headers, policy='public-read')
 
 def deploy_folder(src, dst, headers={}, ignore=[]):
@@ -123,7 +123,7 @@ def delete_folder(dst):
     bucket = s3.get_bucket(app_config.S3_BUCKET['bucket_name'])
 
     for key in bucket.list(prefix='%s/' % dst):
-        print 'Deleting %s' % (key.key)
+        print('Deleting %s' % (key.key))
 
         key.delete()
 

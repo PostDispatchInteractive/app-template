@@ -15,7 +15,7 @@ def bootstrap():
     Bootstraps Github issues with default configuration.
     """
     if app_config.PROJECT_SLUG == '$NEW_PROJECT_SLUG':
-        print 'You can\'t run the issues bootstrap until you\'ve set PROJECT_SLUG in app_config.py!'
+        print('You can\'t run the issues bootstrap until you\'ve set PROJECT_SLUG in app_config.py!')
         return
 
     auth = github.get_auth()

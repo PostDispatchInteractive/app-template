@@ -48,8 +48,15 @@ def less():
         try:
             local('node_modules/less/bin/lessc %s %s' % (path, out_path))
         except:
-            print 'It looks like "lessc" isn\'t installed. Try running: "npm install"'
+            print('It looks like "lessc" isn\'t installed. Try running: "npm install"')
             raise
+
+        # JOSH ADDITION: WRITE A MINIFIED VERSION
+        with open(out_path, 'r') as less_css:
+            min_path = 'www/css/%s.min.css' % name
+            with open(min_path, 'w') as f:
+                f.write( minify( less_css.read() ) )
+
 
 
 @task(default=True)
@@ -76,12 +83,12 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
 
         # Skip utility views
         if name == 'static' or name.startswith('_'):
-            print 'Skipping %s' % name
+            print('Skipping %s' % name)
             continue
 
         # Skip routes with any() construction: 
         if 'any(' in rule_string:
-            print 'Skipping %s' % name
+            print('Skipping %s' % name)
             continue
 
         # Convert trailing slashes to index.html files
@@ -90,7 +97,7 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
         elif rule_string.endswith('.html'):
             filename = 'www' + rule_string
         else:
-            print 'Skipping %s' % name
+            print('Skipping %s' % name)
             continue
 
         # Create the output path
@@ -99,7 +106,7 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
         if not (os.path.exists(dirname)):
             os.makedirs(dirname)
 
-        print 'Rendering %s' % (filename)
+        print('Rendering %s' % (filename))
 
         # Render views, reusing compiled assets
         with _fake_context(rule_string):
@@ -112,10 +119,12 @@ def render_all( server_name=None, app_dir=None, project_slug=None ):
 
             compiled_includes = g.compiled_includes
 
-        # Minify HTML. Comment out the next three lines if you don't want to minify.
-        content = unicode(content, 'utf-8')
+        # Make sure content is a Unicode string, not bytes
+        if isinstance(content, (bytes, bytearray)):
+            content = content.decode('utf-8')
+
+        # Minify HTML. Comment out the next two lines if you don't want to minify.
         content = minify(content, remove_optional_attribute_quotes=False)
-        content = content.encode('utf-8')
 
         # Write rendered view
         # NB: Flask response object has utf-8 encoded the data

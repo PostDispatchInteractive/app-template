@@ -3,7 +3,6 @@ import os
 
 from app_config import authomatic
 from authomatic.adapters import WerkzeugAdapter
-from exceptions import KeyError
 from flask import Blueprint, make_response, redirect, render_template, url_for
 from functools import wraps
 from render_utils import make_context
@@ -29,6 +28,8 @@ def oauth_alert():
         resp = authomatic.access(credentials, 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json')
         if resp.status == 200:
             context['email'] = resp.data['email']
+        else:
+            raise KeyError("Error! Google returned a %s error" % resp.status)
 
     return render_template('oauth/oauth.html', **context)
 
@@ -80,7 +81,7 @@ def get_credentials():
     file_path = os.path.expanduser(app_config.GOOGLE_OAUTH_CREDENTIALS_PATH)
 
     try:
-        with open(file_path) as f:
+        with open(file_path, 'r') as f:
             serialized_credentials = f.read()
     except IOError:
         return None
@@ -88,7 +89,14 @@ def get_credentials():
     credentials = authomatic.credentials(serialized_credentials)
 
     if not credentials.valid:
-        credentials.refresh()
+        resp = credentials.refresh()
+
+        if not resp:
+            raise KeyError("Error! Could not refresh credentials.")
+
+        if resp.status != 200:
+            raise KeyError("Error! Could not refresh credentials. Google returned a %s error" % resp.status)
+
         save_credentials(credentials)
 
     return credentials
@@ -98,8 +106,10 @@ def save_credentials(credentials):
     Take Authomatic credentials object and save to disk.
     """
     file_path = os.path.expanduser(app_config.GOOGLE_OAUTH_CREDENTIALS_PATH)
+    serialized_credentials = credentials.serialize()
+
     with open(file_path, 'w') as f:
-        f.write(credentials.serialize())
+        f.write(serialized_credentials)
 
 def get_document(key, file_path, mimeType=None):
     """
@@ -117,16 +127,16 @@ def get_document(key, file_path, mimeType=None):
     url = DRIVE_API_EXPORT_TEMPLATE % (
         key,
         mimeType)
-    response = app_config.authomatic.access(credentials, url)
+    resp = app_config.authomatic.access(credentials, url)
 
-    if response.status != 200:
-        if response.status == 404:
+    if resp.status != 200:
+        if resp.status == 404:
             raise KeyError("Error! Your Google Doc does not exist or you do not have permission to access it.")
         else:
-            raise KeyError("Error! Google returned a %s error" % response.status)
+            raise KeyError("Error! Google returned a %s error" % resp.status)
 
     with open(file_path, 'wb') as writefile:
-        writefile.write(response.content)
+        writefile.write(resp.content)
 
 def _has_api_credentials():
     """

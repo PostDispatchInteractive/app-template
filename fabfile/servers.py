@@ -27,7 +27,7 @@ def setup():
     require('branch', provided_by=['stable', 'main', 'branch'])
 
     if not app_config.DEPLOY_TO_SERVERS:
-        print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.'
+        print('You must set DEPLOY_TO_SERVERS = True in your app_config.py before setting up the servers.')
 
         return
 
@@ -196,7 +196,7 @@ def deploy_confs():
             b = run('md5sum %s' % installed_path).split()[0]
 
             if a != b:
-                print 'Updating %s' % installed_path
+                print('Updating %s' % installed_path)
                 put(rendered_path, installed_path, use_sudo=True)
 
                 if service == 'nginx':
@@ -210,7 +210,7 @@ def deploy_confs():
                     sudo('chmod 644 %s' % app_config.UWSGI_SOCKET_PATH)
                     sudo('chown www-data:www-data %s' % app_config.UWSGI_SOCKET_PATH)
             else:
-                print '%s has not changed' % rendered_path
+                print('%s has not changed' % rendered_path)
 
 @task
 def nuke_confs():
@@ -248,7 +248,7 @@ def fabcast(command):
     require('settings', provided_by=['production', 'staging'])
 
     if not app_config.DEPLOY_TO_SERVERS:
-        print 'You must set DEPLOY_TO_SERVERS = True in your app_config.py and setup a server before fabcasting.'
+        print('You must set DEPLOY_TO_SERVERS = True in your app_config.py and setup a server before fabcasting.')
 
     run('cd %s && bash run_on_server.sh fab %s $DEPLOYMENT_TARGET %s' % (app_config.SERVER_REPOSITORY_PATH, env.branch, command))
 

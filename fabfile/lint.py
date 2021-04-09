@@ -26,7 +26,7 @@ def lint():
             try:
                 local( 'node_modules/eslint/bin/eslint.js %s || exit 0' % (path) )
             except:
-                print 'It looks like "eslint" isn\'t installed. Try running: "npm install"'
+                print('It looks like "eslint" isn\'t installed. Try running: "npm install"')
                 raise
 
  
