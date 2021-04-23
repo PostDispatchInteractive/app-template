@@ -43,22 +43,22 @@ This is something you need to do one time only on your development Mac.
 How to create an app
 --------------------
 
-1. Create a GitHub repo for your project. Use a unique, descriptive slug (e.g. `your-project-2020`)
+1. Create a GitHub repo for your project. Use a unique, descriptive slug (e.g. `your-project-2021`)
 
 2. Clone the P-D app-template repo to your local drive as the basis for your new project:
 
 ```
-git clone git@github.com:PostDispatchInteractive/app-template.git your-project-2020
+git clone git@github.com:PostDispatchInteractive/app-template.git your-project-2021
 ```
 
 3. Run the following commands to set up the new project.
 
 ```
-cd your-project-2020
+cd your-project-2021
 
-mkvirtualenv your-project-2020
+mkvirtualenv your-project-2021
 
-pip install -r requirements.txt
+pip install -r requirements3.txt
 
 npm install
 

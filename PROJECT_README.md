@@ -13,12 +13,8 @@ $NEW_PROJECT_SLUG
 * [COPY editing](#copy-editing)
 * [Open Linked Google Spreadsheet](#open-linked-google-spreadsheet)
 * [Arbitrary Google Docs](#arbitrary-google-docs)
-* [Run Python tests](#run-python-tests)
-* [Run Javascript tests](#run-javascript-tests)
-* [Compile static assets](#compile-static-assets)
-* [Test the rendered app](#test-the-rendered-app)
-* [Deploy to S3](#deploy-to-s3)
-* [Deploy to EC2](#deploy-to-ec2)
+* [Deploy to graphics staging server](#deploy-to-graphics-staging-server)
+* [Deploy to graphics production server](#deploy-to-graphics-production-server)
 * [Install cron jobs](#install-cron-jobs)
 * [Install web services](#install-web-services)
 * [Run a remote fab command](#run-a-remote-fab-command)
@@ -34,11 +30,12 @@ Assumptions
 
 The following things are assumed to be true in this documentation.
 
-* You are running OSX.
-* You are using Python 2.7. (Probably the version that came OSX.)
+* You are running Mac OS X.
+* You have installed Python 3, via Homebrew
+* You have installed Node v14, via Homebrew
 * You have [virtualenv](https://pypi.python.org/pypi/virtualenv) and [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) installed and working.
 
-For more details on the technology stack used with the app-template, see NPR's [development environment blog post](http://blog.apps.npr.org/2013/06/06/how-to-setup-a-developers-environment.html).
+If you need help to set up your Mac for coding/development, see NPR's [development environment blog post](http://blog.apps.npr.org/2013/06/06/how-to-setup-a-developers-environment.html).
 
 What's in here?
 ---------------
@@ -54,16 +51,12 @@ The project contains the following folders and important files:
 * ``templates`` -- HTML ([Jinja2](http://jinja.pocoo.org/docs/)) templates, to be compiled locally.
 * ``tests`` -- Python unit tests.
 * ``www`` -- Static and compiled assets to be deployed. (a.k.a. "the output")
-* ``www/assets`` -- A symlink to an S3 bucket containing binary assets (images, audio).
-* ``www/live-data`` -- "Live" data deployed to S3 via cron jobs or other mechanisms. (Not deployed with the rest of the project.)
-* ``www/test`` -- Javascript tests and supporting files.
 * ``app.py`` -- A [Flask](http://flask.pocoo.org/) app for rendering the project locally.
 * ``app_config.py`` -- Global project configuration for scripts, deployment, etc.
-* ``copytext.py`` -- Code supporting the [Editing workflow](#editing-workflow)
 * ``crontab`` -- Cron jobs to be installed as part of the project.
 * ``public_app.py`` -- A [Flask](http://flask.pocoo.org/) app for running server-side code.
 * ``render_utils.py`` -- Code supporting template rendering.
-* ``requirements.txt`` -- Python requirements.
+* ``requirements3.txt`` -- Python3 requirements.
 * ``static.py`` -- Static Flask views used in both ``app.py`` and ``public_app.py``.
 
 Bootstrap the project
@@ -81,12 +74,10 @@ Then bootstrap the project:
 ```
 cd $NEW_PROJECT_SLUG
 mkvirtualenv $NEW_PROJECT_SLUG
-pip install -r requirements.txt
+pip install -r requirements3.txt
 npm install
 fab update
 ```
-
-**Problems installing requirements?** You may need to run the pip command as ``ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future pip install -r requirements.txt`` to work around an issue with OSX.
 
 Hide project secrets
 --------------------
@@ -130,7 +121,7 @@ workon $PROJECT_SLUG
 fab app
 ```
 
-Visit [localhost:8000](http://localhost:8000) in your browser.
+Visit [localhost:8000](https://localhost:8000) in your browser.
 
 COPY configuration
 ------------------
@@ -143,17 +134,17 @@ Enable the Drive API for your project and create a "web application" client ID.
 
 For the redirect URIs use:
 
-* `http://localhost:8000/authenticate/`
-* `http://127.0.0.1:8000/authenticate`
-* `http://localhost:8888/authenticate/`
-* `http://127.0.0.1:8888/authenticate`
+* `https://localhost:8000/authenticate/`
+* `https://127.0.0.1:8000/authenticate`
+* `https://localhost:8888/authenticate/`
+* `https://127.0.0.1:8888/authenticate`
 
 For the Javascript origins use:
 
-* `http://localhost:8000`
-* `http://127.0.0.1:8000`
-* `http://localhost:8888`
-* `http://127.0.0.1:8888`
+* `https://localhost:8000`
+* `https://127.0.0.1:8000`
+* `https://localhost:8888`
+* `https://127.0.0.1:8888`
 
 You'll also need to set some environment variables:
 
@@ -189,7 +180,7 @@ The app template is outfitted with a few ``fab`` utility functions that make pul
 To update the latest document, simply run:
 
 ```
-fab text.update
+fab text
 ```
 
 Note: ``text.update`` runs automatically whenever ``fab render`` is called.
@@ -270,67 +261,19 @@ def read_my_google_doc():
 read_my_google_doc()
 ```
 
-Run Python tests
-----------------
-
-Python unit tests are stored in the ``tests`` directory. Run them with ``fab tests``.
-
-Run Javascript tests
---------------------
-
-With the project running, visit [localhost:8000/test/SpecRunner.html](http://localhost:8000/test/SpecRunner.html).
-
-Compile static assets
----------------------
-
-Compile LESS to CSS, compile javascript templates to Javascript and minify all assets:
-
-```
-workon $NEW_PROJECT_SLUG
-fab render
-```
-
-(This is done automatically whenever you deploy to S3.)
-
-Test the rendered app
----------------------
-
-If you want to test the app once you've rendered it out, just use the Python webserver:
-
-```
-cd www
-python -m SimpleHTTPServer
-```
-
-Deploy to S3
-------------
+Deploy to graphics staging server
+---------------------------------
 
 ```
 fab staging main deploy
 ```
 
-Deploy to EC2
--------------
+Deploy to graphics production server
+------------------------------------
 
-You can deploy to EC2 for a variety of reasons. We cover two cases: Running a dynamic web application (`public_app.py`) and executing cron jobs (`crontab`).
-
-Servers capable of running the app can be setup using our [servers](https://github.com/nprapps/servers) project.
-
-For running a Web application:
-
-* In ``app_config.py`` set ``DEPLOY_TO_SERVERS`` to ``True``.
-* Also in ``app_config.py`` set ``DEPLOY_WEB_SERVICES`` to ``True``.
-* Run ``fab staging main servers.setup`` to configure the server.
-* Run ``fab staging main deploy`` to deploy the app.
-
-For running cron jobs:
-
-* In ``app_config.py`` set ``DEPLOY_TO_SERVERS`` to ``True``.
-* Also in ``app_config.py``, set ``INSTALL_CRONTAB`` to ``True``
-* Run ``fab staging main servers.setup`` to configure the server.
-* Run ``fab staging main deploy`` to deploy the app.
-
-You can configure your EC2 instance to both run Web services and execute cron jobs; just set both environment variables in the fabfile.
+```
+fab production main deploy
+```
 
 Install cron jobs
 -----------------
@@ -346,7 +289,7 @@ To install your crontab set `INSTALL_CRONTAB` to `True` in `app_config.py`. Cron
 The cron jobs themselves should be defined in `fabfile/cron_jobs.py` whenever possible.
 
 Install web services
----------------------
+--------------------
 
 Web services are configured in the `confs/` folder.
 
@@ -364,8 +307,8 @@ You can also deploy only configuration files by running (normally this is invoke
 fab servers.deploy_confs
 ```
 
-Run a  remote fab command
--------------------------
+Run a remote fab command
+------------------------
 
 Sometimes it makes sense to run a fabric command on the server, for instance, when you need to render using a production database. You can do this with the `fabcast` fabric command. For example:
 
@@ -375,19 +318,3 @@ fab staging main servers.fabcast:deploy
 
 If any of the commands you run themselves require executing on the server, the server will SSH into itself to run them.
 
-Analytics
----------
-
-The Google Analytics events tracked in this application are:
-
-|Category|Action|Label|Value|
-|--------|------|-----|-----|
-|$NEW_PROJECT_SLUG|tweet|`location`||
-|$NEW_PROJECT_SLUG|facebook|`location`||
-|$NEW_PROJECT_SLUG|email|`location`||
-|$NEW_PROJECT_SLUG|new-comment||
-|$NEW_PROJECT_SLUG|open-share-discuss||
-|$NEW_PROJECT_SLUG|close-share-discuss||
-|$NEW_PROJECT_SLUG|summary-copied||
-|$NEW_PROJECT_SLUG|featured-tweet-action|`action`|
-|$NEW_PROJECT_SLUG|featured-facebook-action|`action`|
