@@ -30,6 +30,17 @@ GITHUB_USERNAME = 'PostDispatchInteractive'
 REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
+# Setting this to true will force the development server (localhost) to run in SSL mode.
+# SSL mode requires the existence of a self-signed certificate from the /ssl-certificate/ repo.
+# The repo can be found here: https://github.com/PostDispatchInteractive/ssl-certificate
+USE_SSL_DEV = True
+if USE_SSL_DEV:
+    # Keep track of the directory where this script is running
+    app_path = os.path.dirname(os.path.realpath(__file__))
+    projects_path = os.path.dirname(app_path)
+    SSL_CERT = os.path.join(projects_path, 'ssl-certificate/certificate/localhost.crt')
+    SSL_KEY = os.path.join(projects_path, 'ssl-certificate/certificate/server.key')
+
 # Project name used for assets rig
 # Should stay the same, even if PROJECT_SLUG changes
 ASSETS_SLUG = '$NEW_PROJECT_SLUG'

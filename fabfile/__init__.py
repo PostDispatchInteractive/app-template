@@ -107,14 +107,17 @@ def app(port='8000'):
     """
     Serve app.py.
     """
-    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --reload app:wsgi_app' % port)
+    if app_config.USE_SSL_DEV == True:
+        local(f'gunicorn -b 0.0.0.0:{port} --certfile={app_config.SSL_CERT} --keyfile={app_config.SSL_KEY} --timeout 3600 --reload app:wsgi_app')
+    else:
+        local(f'gunicorn -b 0.0.0.0:{port} --timeout 3600 --reload app:wsgi_app')
 
 @task
 def public_app(port='8001'):
     """
     Serve public_app.py.
     """
-    local('gunicorn -b 0.0.0.0:%s --timeout 3600 --reload public_app:wsgi_app' % port)
+    local(f'gunicorn -b 0.0.0.0:{port} --timeout 3600 --reload public_app:wsgi_app')
 
 @task
 def tests():
@@ -205,7 +208,7 @@ def deploy(remote='origin'):
 
         if (app_config.DEPLOYMENT_TARGET == 'production' and env.branch != 'stable'):
             utils.confirm(
-                colored("You are trying to deploy the '%s' branch to production.\nYou should really only deploy a stable branch.\nDo you know what you're doing?" % env.branch, "red")
+                colored(f"You are trying to deploy the '{env.branch}' branch to production.\nYou should really only deploy a stable branch.\nDo you know what you're doing?", "red")
             )
 
         servers.checkout_latest(remote)
@@ -243,7 +246,7 @@ def shiva_the_destroyer():
     require('settings', provided_by=[production, staging])
 
     utils.confirm(
-        colored("You are about to destroy everything deployed to %s for this project.\nDo you know what you're doing?')" % app_config.DEPLOYMENT_TARGET, "red")
+        colored(f"You are about to destroy everything deployed to {app_config.DEPLOYMENT_TARGET} for this project.\nDo you know what you're doing?')", "red")
     )
 
     with settings(warn_only=True):
