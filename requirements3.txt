@@ -16,7 +16,7 @@ gunicorn==20.0.4
 htmlmin==0.1.12
 httplib2==0.18.1
 jdcal==1.4.1
-Jinja2==2.11.2
+Jinja2==2.11.3
 jmespath==0.10.0
 MarkupSafe==1.1.1
 nose==1.3.7
